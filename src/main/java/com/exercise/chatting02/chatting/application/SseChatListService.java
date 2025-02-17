@@ -1,9 +1,10 @@
 package com.exercise.chatting02.chatting.application;
 
+import com.exercise.chatting02.chatting.dto.response.ChatRoomListResponse;
+import com.exercise.chatting02.common.baseException.JsonProcessingCustomException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toty.chatting.dto.response.ChatRoomListResponse;
-import com.toty.common.baseException.JsonProcessingCustomException;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;

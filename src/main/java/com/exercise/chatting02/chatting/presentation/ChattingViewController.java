@@ -1,14 +1,14 @@
 package com.exercise.chatting02.chatting.presentation;
 
 
-import com.toty.chatting.application.ChatRoomService;
-import com.toty.chatting.domain.model.ChatParticipant;
-import com.toty.chatting.domain.model.ChatRoom;
-import com.toty.chatting.domain.repository.ChatParticipantRepository;
-import com.toty.chatting.domain.repository.ChatRoomRepository;
-import com.toty.chatting.dto.response.ChatRoomListResponse;
-import com.toty.common.annotation.CurrentUser;
-import com.toty.user.domain.model.User;
+import com.exercise.chatting02.chatting.application.ChatRoomService;
+import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
+import com.exercise.chatting02.chatting.domain.model.ChatRoom;
+import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
+import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
+import com.exercise.chatting02.chatting.dto.response.ChatRoomListResponse;
+import com.exercise.chatting02.common.annotation.CurrentUser;
+import com.exercise.chatting02.user.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;

@@ -1,17 +1,18 @@
 package com.exercise.chatting02.chatting.application;
 
+import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
+import com.exercise.chatting02.chatting.domain.model.ChatRoom;
+import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
+import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
+import com.exercise.chatting02.chatting.dto.response.ChatRoomListResponse;
+import com.exercise.chatting02.common.baseException.JsonProcessingCustomException;
+import com.exercise.chatting02.common.exception.ErrorCode;
+import com.exercise.chatting02.common.exception.ExpectedException;
+import com.exercise.chatting02.user.domain.model.User;
+import com.exercise.chatting02.user.domain.repository.UserRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toty.chatting.domain.model.ChatParticipant;
-import com.toty.chatting.domain.model.ChatRoom;
-import com.toty.chatting.domain.repository.ChatParticipantRepository;
-import com.toty.chatting.domain.repository.ChatRoomRepository;
-import com.toty.chatting.dto.response.ChatRoomListResponse;
-import com.toty.common.baseException.JsonProcessingCustomException;
-import com.toty.common.exception.ErrorCode;
-import com.toty.common.exception.ExpectedException;
-import com.toty.user.domain.model.User;
-import com.toty.user.domain.repository.UserRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;

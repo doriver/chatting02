@@ -1,14 +1,13 @@
 package com.exercise.chatting02.chatting.application;
 
-
-import com.toty.chatting.domain.model.ChatMessage;
-import com.toty.chatting.domain.model.ChatParticipant;
-import com.toty.chatting.domain.model.ChatRoom;
-import com.toty.chatting.domain.repository.ChatMessageRepository;
-import com.toty.chatting.domain.repository.ChatParticipantRepository;
-import com.toty.chatting.domain.repository.ChatRoomRepository;
-import com.toty.user.domain.model.User;
-import com.toty.user.domain.repository.UserRepository;
+import com.exercise.chatting02.chatting.domain.model.ChatMessage;
+import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
+import com.exercise.chatting02.chatting.domain.model.ChatRoom;
+import com.exercise.chatting02.chatting.domain.repository.ChatMessageRepository;
+import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
+import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
+import com.exercise.chatting02.user.domain.model.User;
+import com.exercise.chatting02.user.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

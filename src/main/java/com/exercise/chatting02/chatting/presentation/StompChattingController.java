@@ -1,9 +1,8 @@
 package com.exercise.chatting02.chatting.presentation;
 
-
-import com.toty.chatting.application.ChatMessageService;
-import com.toty.chatting.dto.message.RecieveMessage;
-import com.toty.chatting.dto.message.SendMessage;
+import com.exercise.chatting02.chatting.application.ChatMessageService;
+import com.exercise.chatting02.chatting.dto.message.RecieveMessage;
+import com.exercise.chatting02.chatting.dto.message.SendMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

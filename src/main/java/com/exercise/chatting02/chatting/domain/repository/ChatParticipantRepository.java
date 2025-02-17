@@ -1,8 +1,8 @@
 package com.exercise.chatting02.chatting.domain.repository;
 
-import com.toty.chatting.domain.model.ChatParticipant;
-import com.toty.chatting.domain.model.ChatRoom;
-import com.toty.user.domain.model.User;
+import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
+import com.exercise.chatting02.chatting.domain.model.ChatRoom;
+import com.exercise.chatting02.user.domain.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

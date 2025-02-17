@@ -1,6 +1,6 @@
 package com.exercise.chatting02.chatting.domain.model;
 
-import com.toty.user.domain.model.User;
+import com.exercise.chatting02.user.domain.model.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

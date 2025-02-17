@@ -1,10 +1,10 @@
 package com.exercise.chatting02.chatting.presentation;
 
-import com.toty.chatting.application.ChatParticipanceService;
-import com.toty.chatting.application.ChatRoomService;
-import com.toty.chatting.domain.model.ChatRoom;
-import com.toty.common.annotation.CurrentUser;
-import com.toty.user.domain.model.User;
+import com.exercise.chatting02.chatting.application.ChatParticipanceService;
+import com.exercise.chatting02.chatting.application.ChatRoomService;
+import com.exercise.chatting02.chatting.domain.model.ChatRoom;
+import com.exercise.chatting02.common.annotation.CurrentUser;
+import com.exercise.chatting02.user.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -28,7 +28,7 @@ public class ChattingApiController {
         단톡방별로, 버튼(참여)을 눌러야만 동작하게 설계되있음
      */
     @PostMapping("/participant/{rid}")
-    public String enterRoom( @PathVariable("rid") long rid
+    public String enterRoom(@PathVariable("rid") long rid
             , @CurrentUser User user, RedirectAttributes reAtr) {
         if (user != null) {
             Long userId = user.getId();

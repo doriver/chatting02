@@ -1,6 +1,6 @@
 package com.exercise.chatting02.chatting.presentation;
 
-import com.toty.chatting.application.SseChatListService;
+import com.exercise.chatting02.chatting.application.SseChatListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
