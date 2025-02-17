@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: chatting02
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mychat02?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: qlqjs
+
+
+
+server:
+  port: 8071

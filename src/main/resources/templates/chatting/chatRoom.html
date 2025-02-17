@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+  <head>
+    
+    <!-- stomp on websocket -->
+    <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+
+  </head>
+
+  <body>
+    
+ 
+    <input type="hidden" id="userName" th:value="${nickname}">
+    <input type="hidden" id="userId" th:value="${userId}">
+    <input type="hidden" id="roomId" th:value="${room.id}">
+    <input type="hidden" id="roomMentorId" th:value="${room.mentor.id}">
+    <input type="hidden" id="serverPort" th:value="${serverPort}">
+    
+    <div class="container">
+      <div class="row">
+        <div class="col-8">
+          <h3>환영합니다. [[${room.mentor.nickname}]]님의 단톡방 입니다.</h3>
+          <h4>주제 : [[${room.roomName}]]</h4>
+        </div>
+        <div class="col-3">
+          <button sec:authorize="isAuthenticated()" onclick="exitRoom()">채팅방 나가기</button>
+          <div sec:authorize="hasAuthority('MENTOR')">
+            <button th:if="${userId == room.mentor.id}" 
+              onclick="endRoom()">채팅방 종료하기</button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-8">
+          <div>인원 : <span id="userCount">[[${chatterList.size()}]]</span> / [[${room.userLimit}]]</div>
+          <div style="height: 20px;"></div>
+          <div class="chat-window">
+            <!-- Header -->
+            <div class="header d-flex justify-content-between py-3">
+                <div>
+                    <a href="/view/chatting/list"><i class="fa-solid fa-arrow-left mx-2" style="color: white;"></i></a>
+                </div>
+                <div>
+                    <i class="fa-solid fa-magnifying-glass me-2"></i>
+                    <i class="fa-solid fa-gear me-2"></i>
+                    <i id="statusIcon" class="fa-solid fa-link"></i>
+                </div>
+            </div>
+            
+            <!-- Chat Container가 동적으로 바뀜 -->
+            <div class="chat-container" >
+                <div id="chatContainer">
+                </div>
+            </div>
+            <input class="form-control mt-2" style="margin: 10px; margin-right: 10px;" 
+              type="text" id="messageInput" 
+              placeholder="메시지 입력" onkeydown="handleEnterKey(event)">
+          </div>
+        </div>
+        <div class="col-3">
+          <h3><strong>참석자 목록</strong></h3>
+          
+          <table class="table">
+              <thead>
+                  <tr>
+                      <td style="width: 30%;"></td>
+                      <td style="width: 50%;"></td>
+                  </tr>
+              </thead>
+
+              <!-- js파일에 있음, Chatter List( 동적으로 바뀜 ) -->
+              <tbody id="chatters">
+                  <tr th:each="user : ${chatterList}" th:class="'user-' + ${user.id}">
+                      <td> 
+                          <img src="/img/chatting/undraw_profile.svg" style="width: 50px; height: 50px;">
+                      </td>
+                      <td th:text="${user.chatter.nickname}">참석자 이름</td>
+                  </tr>
+              </tbody>
+
+          </table>
+        </div>
+      </div>
+    </div>
+
+ 
+    <link href="/css/chatting/chatRoom.css" rel="stylesheet">
+    <script src="/js/chatting/chatRoom.js"></script>
+
+  </body>
+</html>
