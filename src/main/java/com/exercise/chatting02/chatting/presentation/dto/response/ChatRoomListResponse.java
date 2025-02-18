@@ -1,4 +1,4 @@
-package com.exercise.chatting02.chatting.dto.response;
+package com.exercise.chatting02.chatting.presentation.dto.response;
 
 import lombok.*;
 

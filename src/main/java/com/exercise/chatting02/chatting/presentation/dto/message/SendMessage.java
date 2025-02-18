@@ -1,4 +1,4 @@
-package com.exercise.chatting02.chatting.dto.message;
+package com.exercise.chatting02.chatting.presentation.dto.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

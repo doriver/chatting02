@@ -1,6 +1,6 @@
 package com.exercise.chatting02.chatting.application;
 
-import com.exercise.chatting02.chatting.dto.response.ChatRoomListResponse;
+import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomListResponse;
 import com.exercise.chatting02.common.baseException.JsonProcessingCustomException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

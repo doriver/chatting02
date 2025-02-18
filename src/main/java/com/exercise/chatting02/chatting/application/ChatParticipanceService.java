@@ -4,7 +4,7 @@ import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
 import com.exercise.chatting02.chatting.domain.model.ChatRoom;
 import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
 import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
-import com.exercise.chatting02.chatting.dto.message.ParticipantMessage;
+import com.exercise.chatting02.chatting.presentation.dto.message.ParticipantMessage;
 import com.exercise.chatting02.user.domain.model.User;
 import com.exercise.chatting02.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

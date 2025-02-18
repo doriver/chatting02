@@ -1,4 +1,4 @@
-package com.exercise.chatting02.chatting.presentation;
+package com.exercise.chatting02.chatting.presentation.view;
 
 
 import com.exercise.chatting02.chatting.application.ChatRoomService;
@@ -6,7 +6,7 @@ import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
 import com.exercise.chatting02.chatting.domain.model.ChatRoom;
 import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
 import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
-import com.exercise.chatting02.chatting.dto.response.ChatRoomListResponse;
+import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomListResponse;
 import com.exercise.chatting02.common.annotation.CurrentUser;
 import com.exercise.chatting02.user.domain.model.User;
 import lombok.RequiredArgsConstructor;

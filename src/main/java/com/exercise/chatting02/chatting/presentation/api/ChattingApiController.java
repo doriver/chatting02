@@ -1,4 +1,4 @@
-package com.exercise.chatting02.chatting.presentation;
+package com.exercise.chatting02.chatting.presentation.api;
 
 import com.exercise.chatting02.chatting.application.ChatParticipanceService;
 import com.exercise.chatting02.chatting.application.ChatRoomService;
