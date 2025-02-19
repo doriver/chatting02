@@ -18,29 +18,25 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "password")
-    private String password;
 
     @Column(name = "nickname")
     private String nickname; // 필수값
 
-    @Column(name = "username")
-    private String username;
-
     @Enumerated(EnumType.ORDINAL)
     private Role role;
 
-
+//    @Column(name = "username")
+//    private String username;
+//
+//    @Column(name = "email")
+//    private String email;
+//
+//    @Column(name = "password")
+//    private String password;
 
     @Builder
-    public User(String email, String password, String nickname, String phoneNumber, boolean isDeleted, String username) {
-        this.email = email;
-        this.password = password;
+    public User(String nickname) {
         this.nickname = nickname;
-        this.username = username;
     }
 
 }

@@ -8,12 +8,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-@Configuration
-@EnableWebSecurity // Spring Security를 활성화함
-@RequiredArgsConstructor
+/*
+    Security기반 인증은 추후 적용 예정
+ */
+
+//@Configuration
+//@EnableWebSecurity // Spring Security를 활성화함
+//@RequiredArgsConstructor
 public class SecurityConfig {
 
-    @Bean
+//    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.httpBasic(basic -> basic.disable())
             .csrf(csrf -> csrf.disable())
@@ -21,7 +25,13 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            ;
+            .authorizeHttpRequests(requests -> requests
+//                    .requestMatchers().permitAll()
+//                    .requestMatchers().hasAuthority("MENTOR")
+                    .anyRequest().permitAll())
+
+
+        ;
         return http.build();
     }
 }
