@@ -17,7 +17,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ExpectedException.class)
     public ResponseEntity<ApiResponse> handleExpectedException(ExpectedException ex) {
         ErrorCode errorCode = ex.getErrorCode();
-
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST) // 응답 헤더에는 400 코드가 가되,
                 .body(ApiResponse.error(errorCode)); // 실제 상태 코드는 ErrorCode의 상태 코드이다.

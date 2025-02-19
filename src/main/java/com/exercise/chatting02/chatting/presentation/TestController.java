@@ -20,11 +20,6 @@ public class TestController {
         return "hello" + rid;
     }
 
-    @RequestMapping("/l")
-    public String aasa() {
-        return "user/signIn";
-    }
-
     @GetMapping("/check-role")
     @ResponseBody
     public String checkUserRole() {

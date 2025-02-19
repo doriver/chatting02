@@ -5,7 +5,6 @@ import com.exercise.chatting02.chatting.domain.model.ChatRoom;
 import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
 import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
 import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomListResponse;
-import com.exercise.chatting02.common.baseException.JsonProcessingCustomException;
 import com.exercise.chatting02.common.exception.ErrorCode;
 import com.exercise.chatting02.common.exception.ExpectedException;
 import com.exercise.chatting02.user.domain.model.User;
@@ -140,8 +139,8 @@ public class ChatRoomService {
     private String convertToJson(ChatRoomListResponse chatRoomListResponse) {
         try {
             return new ObjectMapper().writeValueAsString(chatRoomListResponse);
-        } catch (JsonProcessingException e) {
-            throw new JsonProcessingCustomException(e);
+        } catch (Exception e) {
+            throw new ExpectedException(ErrorCode.FAIL_JSON_CONVERT);
         }
     }
 

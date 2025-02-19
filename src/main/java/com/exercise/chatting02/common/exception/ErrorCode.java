@@ -8,7 +8,19 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
-    // 검색
+
+
+    // 채팅
+    FAIL_ROOM_CREATE(HttpStatus.FORBIDDEN, "단톡방을 생성할수 없습니다")
+
+    //
+    , FAIL_JSON_CONVERT(HttpStatus.INTERNAL_SERVER_ERROR, "json변환 실패")
+    ;
+
+    private final HttpStatus httpStatus;
+    private final String message;
+    /*
+        // 검색
     INVALID_SEARCH_FIELD(HttpStatus.BAD_REQUEST, "잘못된 검색 속성입니다."),
 
     // 사용자
@@ -49,9 +61,5 @@ public enum ErrorCode {
 
     // sse
     TOO_MANY_SSE_REQUESTS(HttpStatus.TOO_MANY_REQUESTS, "SSE 연결 요청이 너무 많습니다."),
-    
-    // 채팅
-    FAIL_ROOM_CREATE(HttpStatus.FORBIDDEN, "단톡방을 생성할수 없습니다");
-    private final HttpStatus httpStatus;
-    private final String message;
+     */
 }
