@@ -1,6 +1,6 @@
 package com.exercise.chatting02.chatting.application;
 
-import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomListResponse;
+import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomInfoResponse;
 import com.exercise.chatting02.common.exception.ErrorCode;
 import com.exercise.chatting02.common.exception.ExpectedException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -61,19 +61,19 @@ public class SseChatListService {
 
     public void sendEventCreationRoom(String chatRoomJson) {
 
-        ChatRoomListResponse chatRoomListResponse = convertFromJson(chatRoomJson);
+        ChatRoomInfoResponse chatRoomInfoResponse = convertFromJson(chatRoomJson);
         for (SseEmitter emitter : emitters) {
             try {
-                emitter.send(SseEmitter.event().name("roomCreation").data(chatRoomListResponse));
+                emitter.send(SseEmitter.event().name("roomCreation").data(chatRoomInfoResponse));
             } catch (IOException e) {
                 emitter.complete();
             }
         }
     }
 
-    private ChatRoomListResponse convertFromJson(String json) {
+    private ChatRoomInfoResponse convertFromJson(String json) {
         try {
-            return new ObjectMapper().readValue(json, ChatRoomListResponse.class);
+            return new ObjectMapper().readValue(json, ChatRoomInfoResponse.class);
         } catch (Exception e) {
             throw new ExpectedException(ErrorCode.FAIL_JSON_CONVERT);
         }

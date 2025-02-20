@@ -40,4 +40,8 @@ public class ChatRoom {
         this.userLimit = userLimit;
         this.endedAt = endedAt;
     }
+
+    public void stampEndTime(LocalDateTime endedAt) {
+        this.endedAt = endedAt;
+    }
 }

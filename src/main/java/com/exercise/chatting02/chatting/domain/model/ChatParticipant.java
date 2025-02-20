@@ -38,4 +38,8 @@ public class ChatParticipant {
         this.chatter = chatter;
         this.exitAt = exitAt;
     }
+
+    public void stampExitTime(LocalDateTime exitAt) {
+        this.exitAt = exitAt;
+    }
 }

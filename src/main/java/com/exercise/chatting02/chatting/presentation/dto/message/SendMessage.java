@@ -1,12 +1,9 @@
 package com.exercise.chatting02.chatting.presentation.dto.message;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SendMessage {
     private String sender;
     private long senderId;

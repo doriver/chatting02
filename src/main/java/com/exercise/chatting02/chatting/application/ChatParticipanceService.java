@@ -36,12 +36,12 @@ public class ChatParticipanceService {
         if (participant != null && chatRoom != null) {
             Optional<ChatParticipant> attendance = chatParticipantRepository.findByChatterAndRoomAndExitAt(participant, chatRoom, null);
             if (!attendance.isEmpty()) {
-                ChatParticipant chatParticipant02 = attendance.get();
-                chatParticipant02.setExitAt(LocalDateTime.now()); // 여기까지하면 update될줄 알았는데, 안됨
-                chatParticipantRepository.save(chatParticipant02);
+                ChatParticipant chatParticipant = attendance.get();
+                chatParticipant.stampExitTime(LocalDateTime.now()); // 여기까지하면 update될줄 알았는데, 안됨
+                chatParticipantRepository.save(chatParticipant);
 
-                long chatter01Id = chatParticipant02.getId();
-                String chatterName = chatParticipant02.getChatter().getNickname();
+                long chatter01Id = chatParticipant.getId();
+                String chatterName = chatParticipant.getChatter().getNickname();
 
                 ParticipantMessage participantDTO = ParticipantMessage.builder()
                         .chatterId(chatter01Id).chatterName(chatterName).access(0)

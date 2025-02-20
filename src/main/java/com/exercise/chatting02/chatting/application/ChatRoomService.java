@@ -4,12 +4,12 @@ import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
 import com.exercise.chatting02.chatting.domain.model.ChatRoom;
 import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
 import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
-import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomListResponse;
+import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomInfoResponse;
+import com.exercise.chatting02.common.TimeFormat;
 import com.exercise.chatting02.common.exception.ErrorCode;
 import com.exercise.chatting02.common.exception.ExpectedException;
 import com.exercise.chatting02.user.domain.model.User;
 import com.exercise.chatting02.user.domain.repository.UserRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -44,13 +44,13 @@ public class ChatRoomService {
                 LocalDateTime endTime = LocalDateTime.now();
 
                 // 채팅방 종료시간 입력
-                chatRoom.setEndedAt(endTime);
+                chatRoom.stampEndTime(endTime);
                 chatRoomRepository.save(chatRoom);
 
                 // 채팅방 참석자들 나가는 시간 입력
                 List<ChatParticipant> chatterList = chatParticipantRepository.findAllByRoomAndExitAt(chatRoom, null);
                 for (ChatParticipant chatter : chatterList) {
-                    chatter.setExitAt(endTime);
+                    chatter.stampExitTime(endTime);
                 }
                 chatParticipantRepository.saveAll(chatterList);
 
@@ -75,10 +75,10 @@ public class ChatRoomService {
     /*
         채팅방 목록화면, 채팅방List
      */
-    public List<ChatRoomListResponse> getChatRoomListView() {
+    public List<ChatRoomInfoResponse> getChatRoomListView() {
 
         List<ChatRoom> chatRoomEntityList = chatRoomRepository.findAllByEndedAt(null);
-        List<ChatRoomListResponse> chatRoomList = new LinkedList<>();
+        List<ChatRoomInfoResponse> chatRoomList = new LinkedList<>();
 
         for (ChatRoom chatRoomEntity :chatRoomEntityList) {
             chatRoomList.add(
@@ -90,24 +90,20 @@ public class ChatRoomService {
     /*
         채팅방 목록 화면에서, 채팅방에 필요한 데이터들로 얻기
      */
-    public ChatRoomListResponse chatRoomEntityToDto(ChatRoom entity) {
-        // count메서드로 바꿔야함
-        List<ChatParticipant> currentParticipants = chatParticipantRepository.findAllByRoomAndExitAt(entity, null);
-        
-        // 날짜 String타입의 원하는 형식으로 변형
-        LocalDateTime ldt = entity.getCreatedAt();
+    public ChatRoomInfoResponse chatRoomEntityToDto(ChatRoom entity) {
 
-        if (ldt == null) {
-            ldt = LocalDateTime.now(); // Entity만들때 java쪽에선 null로 들어가고, db쪽에선 CURRENT_TIMESTAMP로 되서
-        }
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH시mm분");
-        String formattedCreatedAt = ldt.format(formatter);
+        Long currentParticipants = chatParticipantRepository.countByRoomAndExitAt(entity, null);
 
-        ChatRoomListResponse chatRoomDTO = ChatRoomListResponse.builder()
+        TimeFormat timeFormat = new TimeFormat();
+        LocalDateTime createdAt = (entity.getCreatedAt() != null) // Entity만들때 java쪽에선 null로 들어가고, db쪽에선 CURRENT_TIMESTAMP로 되서
+                                ? entity.getCreatedAt() : LocalDateTime.now();
+        String formattedCreatedAt = timeFormat.hourMinute(createdAt);
+
+        ChatRoomInfoResponse chatRoomDTO = ChatRoomInfoResponse.builder()
                 .id(entity.getId())
                 .mentor(entity.getMentor().getNickname())
                 .roomName(entity.getRoomName()).createdAt(formattedCreatedAt)
-                .userLimit(entity.getUserLimit()).userCount(currentParticipants.size())
+                .userLimit(entity.getUserLimit()).userCount(currentParticipants.intValue())
                 .build();
 
         return chatRoomDTO;
@@ -127,18 +123,18 @@ public class ChatRoomService {
                     .build();
             ChatRoom createdRoom = chatRoomRepository.save(room);
 
-            ChatRoomListResponse chatRoomListResponse = chatRoomEntityToDto(createdRoom);
+            ChatRoomInfoResponse chatRoomInfoResponse = chatRoomEntityToDto(createdRoom);
             // 채팅방 목록 화면에 생성된 채팅방 추가
-            String message = convertToJson(chatRoomListResponse);
+            String message = convertToJson(chatRoomInfoResponse);
             strTemplate.convertAndSend("room/creation", message);
         } else {
             throw new ExpectedException(ErrorCode.FAIL_ROOM_CREATE);
         }
     }
 
-    private String convertToJson(ChatRoomListResponse chatRoomListResponse) {
+    private String convertToJson(ChatRoomInfoResponse chatRoomInfoResponse) {
         try {
-            return new ObjectMapper().writeValueAsString(chatRoomListResponse);
+            return new ObjectMapper().writeValueAsString(chatRoomInfoResponse);
         } catch (Exception e) {
             throw new ExpectedException(ErrorCode.FAIL_JSON_CONVERT);
         }

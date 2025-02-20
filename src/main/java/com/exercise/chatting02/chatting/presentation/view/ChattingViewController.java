@@ -6,7 +6,7 @@ import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
 import com.exercise.chatting02.chatting.domain.model.ChatRoom;
 import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
 import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
-import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomListResponse;
+import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomInfoResponse;
 import com.exercise.chatting02.common.annotation.CurrentUser;
 import com.exercise.chatting02.user.domain.model.User;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +34,8 @@ public class ChattingViewController {
         단톡방 목록 화면
      */
     @RequestMapping("/list")
-    public String chatList(Model model, @CurrentUser User user) {
-        List<ChatRoomListResponse> chatRoomList = chatRoomService.getChatRoomListView();
+    public String chatListView(Model model, @CurrentUser User user) {
+        List<ChatRoomInfoResponse> chatRoomList = chatRoomService.getChatRoomListView();
         model.addAttribute("chatRoomList", chatRoomList);
         if (user != null) {
             Long userId = user.getId();
@@ -46,12 +46,11 @@ public class ChattingViewController {
 
     /*
                 단통방 화면
-        단톡방 목록에서
-        단톡방별로, 버튼(참여)을 눌러야만 입장가능하도록 설계되있음
+        단톡방 목록에서 단톡방별로, 버튼(참여)을 눌러야만 입장가능하도록 설계되있음
         @PostMapping("/participant/{rid}/{uid}")에서 redirect:/view/chatting/room 됨
      */
     @RequestMapping("/room")
-    public String aachr(@RequestParam("rid") long rid, @CurrentUser User user, Model model) {
+    public String chatView(@RequestParam("rid") long rid, @CurrentUser User user, Model model) {
 
         Optional<ChatRoom> room = chatRoomRepository.findById(rid);
 

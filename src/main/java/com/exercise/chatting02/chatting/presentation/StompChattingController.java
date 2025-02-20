@@ -20,7 +20,6 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class StompChattingController {
     private final ChatMessageService chatMessageService;
-    private final TimeFormat timeFormat;
 
     @MessageMapping("/{roomId}")
     @SendTo("/chatRoom/{roomId}/message")
@@ -36,7 +35,7 @@ public class StompChattingController {
         } catch(Exception e) {
             log.error("roomId={} 에서 채팅메시지 저장 살패 senderId={}", roomId, senderId);
         }
-
+        TimeFormat timeFormat = new TimeFormat();
         String formattedSendedAt = timeFormat.hourMinute(LocalDateTime.now());
 
         RecieveMessage msg = RecieveMessage.builder()

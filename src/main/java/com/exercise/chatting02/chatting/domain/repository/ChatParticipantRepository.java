@@ -17,4 +17,6 @@ public interface ChatParticipantRepository extends JpaRepository<ChatParticipant
 
     List<ChatParticipant> findAllByRoomAndExitAt(ChatRoom room, LocalDateTime exitTime);
     // 단톡방 현재 참석자들 가져오는거 : exitTime = null
+
+    Long countByRoomAndExitAt(ChatRoom room, LocalDateTime exitTime);
 }

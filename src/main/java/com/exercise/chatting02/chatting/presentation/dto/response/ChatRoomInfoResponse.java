@@ -2,11 +2,11 @@ package com.exercise.chatting02.chatting.presentation.dto.response;
 
 import lombok.*;
 
-@Data
+@Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ChatRoomListResponse {
+public class ChatRoomInfoResponse {
 
     private long id;
 
