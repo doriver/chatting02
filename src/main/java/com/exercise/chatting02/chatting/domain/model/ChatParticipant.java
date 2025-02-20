@@ -2,18 +2,13 @@ package com.exercise.chatting02.chatting.domain.model;
 
 import com.exercise.chatting02.user.domain.model.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatParticipant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,4 +31,11 @@ public class ChatParticipant {
     // 퇴장시간
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime exitAt;
+
+    @Builder
+    public ChatParticipant(ChatRoom room, User chatter, LocalDateTime exitAt) {
+        this.room = room;
+        this.chatter = chatter;
+        this.exitAt = exitAt;
+    }
 }

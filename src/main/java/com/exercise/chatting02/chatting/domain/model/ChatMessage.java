@@ -1,18 +1,13 @@
 package com.exercise.chatting02.chatting.domain.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ChatMessage {
 
     @Id
@@ -31,4 +26,11 @@ public class ChatMessage {
 
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)
     private LocalDateTime sendAt;
+
+    @Builder
+    public ChatMessage(ChatRoom room, ChatParticipant sender, String message) {
+        this.room = room;
+        this.sender = sender;
+        this.message = message;
+    }
 }

@@ -31,7 +31,7 @@ public class ChattingViewController {
     @Value("${server.port}") private String serverPort;
 
     /*
-        유저, 단톡방 목록 화면
+        단톡방 목록 화면
      */
     @RequestMapping("/list")
     public String chatList(Model model, @CurrentUser User user) {
