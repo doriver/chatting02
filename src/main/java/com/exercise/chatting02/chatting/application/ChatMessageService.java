@@ -6,23 +6,24 @@ import com.exercise.chatting02.chatting.domain.model.ChatRoom;
 import com.exercise.chatting02.chatting.domain.repository.ChatMessageRepository;
 import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
 import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
-import com.exercise.chatting02.common.exception.ErrorCode;
-import com.exercise.chatting02.common.exception.ExpectedException;
 import com.exercise.chatting02.user.domain.model.User;
 import com.exercise.chatting02.user.domain.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class ChatMessageService {
-    @Autowired private ChatRoomRepository chatRoomRepository;
-    @Autowired private ChatParticipantRepository chatParticipantRepository;
-    @Autowired private ChatMessageRepository chatMessageRepository;
-    @Autowired private UserRepository userRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatParticipantRepository chatParticipantRepository;
+    private final ChatMessageRepository chatMessageRepository;
+    private final UserRepository userRepository;
 
     /*
         채팅메시지 저장하기
+        save관련해서, getReferenceById()로 최적화 하는것 고려
      */
     public void saveMessage(long roomId, long senderId, String message) {
         User user = userRepository.findById(senderId).orElse(null);
@@ -35,7 +36,7 @@ public class ChatMessageService {
                     .build();
             chatMessageRepository.save(dbChatMessage);
         } else {
-//            throw new ExpectedException(ErrorCode.);
+            log.info("잘못된 채팅메시지 저장 시도 roomId={}, senderId={}", roomId, senderId);
         }
     }
 }

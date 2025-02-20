@@ -14,11 +14,6 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/t12")
 public class TestController {
-    @ResponseBody
-    @RequestMapping("/v")
-    public String aa(@RequestParam("rid") long rid) {
-        return "hello" + rid;
-    }
 
     @GetMapping("/check-role")
     @ResponseBody

@@ -31,7 +31,11 @@ public class StompChattingController {
         String sender = sendMessage.getSender();
         String message = sendMessage.getMessage();
 
-        chatMessageService.saveMessage(roomId, senderId, message);
+        try {
+            chatMessageService.saveMessage(roomId, senderId, message);
+        } catch(Exception e) {
+            log.error("roomId={} 에서 채팅메시지 저장 살패 senderId={}", roomId, senderId);
+        }
 
         String formattedSendedAt = timeFormat.hourMinute(LocalDateTime.now());
 
