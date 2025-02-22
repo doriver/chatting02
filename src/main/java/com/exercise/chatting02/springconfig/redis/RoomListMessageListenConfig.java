@@ -1,6 +1,6 @@
 package com.exercise.chatting02.springconfig.redis;
 
-import com.exercise.chatting02.chatting.application.SseChatListService;
+import com.exercise.chatting02.chatting.application.messaging.SseChatListService;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

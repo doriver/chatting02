@@ -1,6 +1,7 @@
 package com.exercise.chatting02.chatting.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,16 +13,19 @@ public class ChatMessage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @NotNull
     private ChatRoom room;
 
     @ManyToOne
     @JoinColumn(name = "participant_id")
+    @NotNull
     private ChatParticipant sender;
 
+    @NotNull
     private String message;
 
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)

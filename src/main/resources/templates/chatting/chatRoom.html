@@ -20,27 +20,27 @@
   <body>
     <input type="hidden" id="userName" th:value="${nickname}">
     <input type="hidden" id="userId" th:value="${userId}">
-    <input type="hidden" id="roomId" th:value="${room.id}">
-    <input type="hidden" id="roomMentorId" th:value="${room.mentor.id}">
+    <input type="hidden" id="roomId" th:value="${roomView.roomId}">
+    <input type="hidden" id="roomMentorId" th:value="${roomView.mentorId}">
     <input type="hidden" id="serverPort" th:value="${serverPort}">
     
     <div class="container">
       <div class="row">
         <div class="col-8">
-          <h3>환영합니다. [[${room.mentor.nickname}]]님의 단톡방 입니다.</h3>
-          <h4>주제 : [[${room.roomName}]]</h4>
+          <h3>환영합니다. [[${roomView.mentor}]]님의 단톡방 입니다.</h3>
+          <h4>주제 : [[${roomView.roomName}]]</h4>
         </div>
         <div class="col-3">
           <button sec:authorize="isAuthenticated()" onclick="exitRoom()">채팅방 나가기</button>
           <div sec:authorize="hasAuthority('MENTOR')">
-            <button th:if="${userId == room.mentor.id}" 
+            <button th:if="${userId == roomView.mentorId}" 
               onclick="endRoom()">채팅방 종료하기</button>
           </div>
         </div>
       </div>
       <div class="row">
         <div class="col-8">
-          <div>인원 : <span id="userCount">[[${chatterList.size()}]]</span> / [[${room.userLimit}]]</div>
+          <div>인원 : <span id="userCount">[[${roomView.chatterList.size()}]]</span> / [[${roomView.userLimit}]]</div>
           <div style="height: 20px;"></div>
           <div class="chat-window">
             <!-- Header -->
@@ -78,11 +78,11 @@
 
               <!-- js파일에 있음, Chatter List( 동적으로 바뀜 ) -->
               <tbody id="chatters">
-                  <tr th:each="user : ${chatterList}" th:class="'user-' + ${user.id}">
+                  <tr th:each="user : ${roomView.chatterList}" th:class="'user-' + ${user.participantId}">
                       <td> 
                           <img src="/img/chatting/undraw_profile.svg" style="width: 50px; height: 50px;">
                       </td>
-                      <td th:text="${user.chatter.nickname}">참석자 이름</td>
+                      <td th:text="${user.nickname}">참석자 이름</td>
                   </tr>
               </tbody>
 

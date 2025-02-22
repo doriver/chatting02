@@ -1,6 +1,7 @@
 package com.exercise.chatting02.user.domain.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,9 +21,11 @@ public class User {
 
 
     @Column(name = "nickname")
+    @NotNull
     private String nickname; // 필수값
 
     @Enumerated(EnumType.ORDINAL)
+    @NotNull
     private Role role;
 
 //    @Column(name = "username")

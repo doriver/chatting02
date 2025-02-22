@@ -2,8 +2,11 @@ package com.exercise.chatting02.chatting.presentation.api;
 
 import com.exercise.chatting02.chatting.application.ChatParticipanceService;
 import com.exercise.chatting02.chatting.application.ChatRoomService;
+import com.exercise.chatting02.chatting.application.MentorService;
 import com.exercise.chatting02.chatting.domain.model.ChatRoom;
 import com.exercise.chatting02.common.annotation.CurrentUser;
+import com.exercise.chatting02.common.exception.ErrorCode;
+import com.exercise.chatting02.common.exception.ExpectedException;
 import com.exercise.chatting02.user.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,23 +23,21 @@ import java.util.List;
 public class ChattingApiController {
 
     private final ChatRoomService chatRoomService;
+    private final MentorService mentorService;
     private final ChatParticipanceService chatParticipanceService;
 
     /*
                 단톡방 입장하기
-        단톡방 목록에서
-        단톡방별로, 버튼(참여)을 눌러야만 동작하게 설계되있음
+        단톡방 목록에서 단톡방별로, 버튼(참여)을 눌러야만 동작하게 설계되있음
      */
     @PostMapping("/participant/{rid}")
     public String enterRoom(@PathVariable("rid") long rid
             , @CurrentUser User user, RedirectAttributes reAtr) {
-        if (user != null) {
-            Long userId = user.getId();
-            chatParticipanceService.userEnterRoom(rid, userId);
-            reAtr.addAttribute("rid", rid);
-            return "redirect:/view/chatting/room";
-        }
-        return "redirect:/view/chatting/list";
+        if (user == null) throw new ExpectedException(ErrorCode.INVALID_ACCESS_LOGIN);
+
+        chatParticipanceService.userEnterRoom(rid, user.getId());
+        reAtr.addAttribute("rid", rid);
+        return "redirect:/view/chatting/room";
     }
 
     /*
@@ -58,7 +59,7 @@ public class ChattingApiController {
     public void endRoom(@PathVariable("roomId") long roomId, @CurrentUser User user) {
         if (user != null) {
             Long userId = user.getId();
-            chatRoomService.mentorEndRoom(userId, roomId);
+            mentorService.mentorEndRoom(userId, roomId);
         }
     }
 
@@ -72,7 +73,7 @@ public class ChattingApiController {
         , @CurrentUser User user) {
         if (user != null) {
             Long userId = user.getId();
-            chatRoomService.mentorCreateRoom(userId, roomName, userLimit);
+            mentorService.mentorCreateRoom(userId, roomName, userLimit);
         }
     }
 

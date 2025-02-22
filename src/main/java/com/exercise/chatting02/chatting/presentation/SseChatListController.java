@@ -1,6 +1,6 @@
 package com.exercise.chatting02.chatting.presentation;
 
-import com.exercise.chatting02.chatting.application.SseChatListService;
+import com.exercise.chatting02.chatting.application.messaging.SseChatListService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;

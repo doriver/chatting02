@@ -1,4 +1,4 @@
-package com.exercise.chatting02.chatting.application;
+package com.exercise.chatting02.chatting.application.messaging;
 
 import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomInfoResponse;
 import com.exercise.chatting02.common.exception.ErrorCode;

@@ -8,11 +8,14 @@ import com.exercise.chatting02.chatting.domain.repository.ChatParticipantReposit
 import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
 import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomInfoResponse;
 import com.exercise.chatting02.common.annotation.CurrentUser;
+import com.exercise.chatting02.common.exception.ErrorCode;
+import com.exercise.chatting02.common.exception.ExpectedException;
 import com.exercise.chatting02.user.domain.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -33,7 +36,7 @@ public class ChattingViewController {
     /*
         단톡방 목록 화면
      */
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public String chatListView(Model model, @CurrentUser User user) {
         List<ChatRoomInfoResponse> chatRoomList = chatRoomService.getChatRoomListView();
         model.addAttribute("chatRoomList", chatRoomList);
@@ -45,27 +48,18 @@ public class ChattingViewController {
     }
 
     /*
-                단통방 화면
-        단톡방 목록에서 단톡방별로, 버튼(참여)을 눌러야만 입장가능하도록 설계되있음
-        @PostMapping("/participant/{rid}/{uid}")에서 redirect:/view/chatting/room 됨
+        단통방 화면
+        @PostMapping("/participant/{rid}") enterRoom() 에서만 접근가능 하도록 설계됨
      */
-    @RequestMapping("/room")
-    public String chatView(@RequestParam("rid") long rid, @CurrentUser User user, Model model) {
+    @GetMapping("/room")
+    public String chatView(@RequestParam("rid") Long rid, @CurrentUser User user, Model model) {
+        if (user == null) throw new ExpectedException(ErrorCode.INVALID_ACCESS_LOGIN);
 
-        Optional<ChatRoom> room = chatRoomRepository.findById(rid);
+        chatRoomService.roomViewSetting(rid, model);
 
-        if (!room.isEmpty()) {
-            List<ChatParticipant> chatterList = chatParticipantRepository.findAllByRoomAndExitAt(room.get(), null);
-            model.addAttribute("chatterList", chatterList);
-            model.addAttribute("room", room.get());
-            if (user != null) {
-                Long userId = user.getId();
-                String nickname = user.getNickname();
-                model.addAttribute("userId", userId);
-                model.addAttribute("nickname", nickname);
-            }
-            model.addAttribute("serverPort", serverPort);
-        }
+        model.addAttribute("userId", user.getId());
+        model.addAttribute("nickname", user.getNickname());
+        model.addAttribute("serverPort", serverPort);
 
         return "chatting/chatRoom";
     }

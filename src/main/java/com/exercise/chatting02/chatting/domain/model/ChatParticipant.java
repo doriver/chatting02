@@ -2,6 +2,7 @@ package com.exercise.chatting02.chatting.domain.model;
 
 import com.exercise.chatting02.user.domain.model.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,16 +13,18 @@ import java.time.LocalDateTime;
 public class ChatParticipant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     // 소속된 단톡방
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @NotNull
     private ChatRoom room;
 
     // 참석자 이름
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotNull
     private User chatter;
 
     // 입장시간
