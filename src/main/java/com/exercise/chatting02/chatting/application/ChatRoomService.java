@@ -28,14 +28,6 @@ public class ChatRoomService {
     private final ToDto toDto;
 
     /*
-        아직 종료안된 단체톡방들 select
-     */
-    public List<ChatRoom> getChatRoomList() {
-        List<ChatRoom> roomList = chatRoomRepository.findAllByEndedAt(null);
-        return roomList;
-    }
-
-    /*
         채팅방 목록화면, 채팅방List
      */
     public List<ChatRoomInfoResponse> getChatRoomListView() {

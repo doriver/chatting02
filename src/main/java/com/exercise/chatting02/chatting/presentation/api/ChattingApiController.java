@@ -28,13 +28,12 @@ public class ChattingApiController {
 
     /*
                 단톡방 입장하기
+        접근범위(권한) : 로그인
         단톡방 목록에서 단톡방별로, 버튼(참여)을 눌러야만 동작하게 설계되있음
      */
     @PostMapping("/participant/{rid}")
     public String enterRoom(@PathVariable("rid") long rid
-            , @CurrentUser User user, RedirectAttributes reAtr) {
-        if (user == null) throw new ExpectedException(ErrorCode.INVALID_ACCESS_LOGIN);
-
+                            , @CurrentUser User user, RedirectAttributes reAtr) {
         chatParticipanceService.userEnterRoom(rid, user.getId());
         reAtr.addAttribute("rid", rid);
         return "redirect:/view/chatting/room";
@@ -42,6 +41,7 @@ public class ChattingApiController {
 
     /*
                 채팅방 나가기
+        접근범위(권한) : 로그인
         단톡방에서 버튼(나가기)을 눌러야만 동작하게 설계되있음
      */
     @PatchMapping("/rooms/{roomId}/{chatterId}")
@@ -52,37 +52,25 @@ public class ChattingApiController {
 
     /*
                 채팅방 종료
+        접근범위(권한) : mentor
         단톡방에서 해당방을 개설한 멘토만 동작 가능
      */
     @PatchMapping("/rooms/{roomId}")
     @ResponseBody
     public void endRoom(@PathVariable("roomId") long roomId, @CurrentUser User user) {
-        if (user != null) {
-            Long userId = user.getId();
-            mentorService.mentorEndRoom(userId, roomId);
-        }
+        mentorService.mentorEndRoom(user.getId(), roomId);
     }
 
     /*
                 단체 채팅방 생성
+        접근범위(권한) : mentor
         validaton필요?
      */
     @PostMapping("/room")
     @ResponseBody
     public void createRoom( @RequestParam("roomName") String roomName, @RequestParam("userLimit") int userLimit
-        , @CurrentUser User user) {
-        if (user != null) {
-            Long userId = user.getId();
-            mentorService.mentorCreateRoom(userId, roomName, userLimit);
-        }
+                            , @CurrentUser User user) {
+        mentorService.mentorCreateRoom(user.getId(), roomName, userLimit);
     }
 
-    /*
-        단체 채팅방 목록
-     */
-    @GetMapping("/rooms")
-    @ResponseBody
-    public List<ChatRoom> roomList() {
-        return chatRoomService.getChatRoomList();
-    }
 }

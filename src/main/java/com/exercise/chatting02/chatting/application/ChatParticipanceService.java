@@ -35,18 +35,24 @@ public class ChatParticipanceService {
         채팅방 참석자가, 해당방 나가는 기능
     */
     public void chatterExitRoom(long roomId, long chatterId) {
-        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElse(null);
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new ExpectedException(ErrorCode.ROOM_NOT_FOUND));
         User participant = userRepository.findById(chatterId).orElse(null);
 
         if (participant != null && chatRoom != null) {
-            Optional<ChatParticipant> attendance = chatParticipantRepository.findByChatterAndRoomAndExitAt(participant, chatRoom, null);
-            if (!attendance.isEmpty()) {
-                ChatParticipant chatParticipant = attendance.get();
+            ChatParticipant chatParticipant = chatParticipantRepository.findByChatterAndRoomAndExitAt(participant, chatRoom, null).orElse(null);
+            if (chatParticipant != null) {
                 chatParticipant.stampExitTime(LocalDateTime.now());
-                chatParticipantRepository.save(chatParticipant);
+                try {
+                    chatParticipantRepository.save(chatParticipant);
+                } catch (Exception e) {
+                    throw new ExpectedException(ErrorCode.FAIL_EXIT_ROOM);
+                }
 
-                participantChangeEvent.inAndOut(0, roomId
-                        , chatParticipant.getId(), chatParticipant.getChatter().getNickname());
+                try {
+                    participantChangeEvent.inAndOut(0, roomId
+                            , chatParticipant.getId(), chatParticipant.getChatter().getNickname());
+                } catch (Exception ignored) {   }
             }
         }
     }
@@ -70,13 +76,12 @@ public class ChatParticipanceService {
             try {
                 savedChatter = chatParticipantRepository.save(chatter);
             } catch (Exception e) {
-                // log.error("단톡방 입장 실패 :", e);
                 throw new ExpectedException(ErrorCode.FAIL_ENTER_ROOM);
             }
-            if (savedChatter != null) {
+            try {
                 participantChangeEvent.inAndOut(1, rid
                         , savedChatter.getId(), savedChatter.getChatter().getNickname());
-            }
+            } catch (Exception ignored) {     }
         }
     }
 }

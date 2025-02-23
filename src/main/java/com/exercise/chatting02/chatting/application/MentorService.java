@@ -1,5 +1,6 @@
 package com.exercise.chatting02.chatting.application;
 
+import com.exercise.chatting02.chatting.application.messaging.RoomChangeEvent;
 import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
 import com.exercise.chatting02.chatting.domain.model.ChatRoom;
 import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
@@ -27,6 +28,9 @@ public class MentorService {
     private final UserRepository userRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ChatParticipantRepository chatParticipantRepository;
+
+    private final RoomChangeEvent roomChangeEvent;
+
     private final ToDto toDto;
 
     private final SimpMessagingTemplate messagingTemplate;
@@ -35,33 +39,29 @@ public class MentorService {
     /*
         멘토가 단톡방 생성
      */
-    @Transactional
     public void mentorCreateRoom(long userId, String roomName, int userLimit) {
-
         User user = userRepository.findById(userId).orElse(null);
 
         if (user != null && user.getRole().name() == "MENTOR") {
             ChatRoom room = ChatRoom.builder()
                     .mentor(user).roomName(roomName).userLimit(userLimit)
                     .build();
-            ChatRoom createdRoom = chatRoomRepository.save(room);
 
-            ChatRoomInfoResponse chatRoomInfoResponse = toDto.chatRoomEntityToDto(createdRoom);
-            // 채팅방 목록 화면에 생성된 채팅방 추가
-            String message = convertToJson(chatRoomInfoResponse);
-            strTemplate.convertAndSend("room/creation", message);
+            ChatRoom createdRoom = null;
+            try {
+                createdRoom = chatRoomRepository.save(room);
+            } catch (Exception e) {
+                throw new ExpectedException(ErrorCode.FAIL_ROOM_CREATE);
+            }
+            try {
+                roomChangeEvent.roomCreation(createdRoom);
+            } catch (Exception ignored) {    }
         } else {
             throw new ExpectedException(ErrorCode.MENTOR_CAN_CREATE_ROOM);
         }
     }
 
-    private String convertToJson(ChatRoomInfoResponse chatRoomInfoResponse) {
-        try {
-            return new ObjectMapper().writeValueAsString(chatRoomInfoResponse);
-        } catch (Exception e) {
-            throw new ExpectedException(ErrorCode.FAIL_JSON_CONVERT);
-        }
-    }
+
 
     /*
         개설자가 채팅방 종료

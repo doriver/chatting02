@@ -35,6 +35,7 @@ public class ChattingViewController {
 
     /*
         단톡방 목록 화면
+        접근범위(권한) : all
      */
     @GetMapping("/list")
     public String chatListView(Model model, @CurrentUser User user) {
@@ -49,12 +50,11 @@ public class ChattingViewController {
 
     /*
         단통방 화면
+        접근범위(권한) : 로그인
         @PostMapping("/participant/{rid}") enterRoom() 에서만 접근가능 하도록 설계됨
      */
     @GetMapping("/room")
     public String chatView(@RequestParam("rid") Long rid, @CurrentUser User user, Model model) {
-        if (user == null) throw new ExpectedException(ErrorCode.INVALID_ACCESS_LOGIN);
-
         chatRoomService.roomViewSetting(rid, model);
 
         model.addAttribute("userId", user.getId());

@@ -33,8 +33,6 @@ public class ParticipantChangeEvent {
             } else if (access == 0) {
                 strTemplate.convertAndSend("participant/down", roomId+"");
             }
-        } catch (Exception e) {
-
-        }
+        } catch (Exception ignored) {        }
     }
 }
