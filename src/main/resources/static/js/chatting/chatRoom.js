@@ -173,7 +173,7 @@ function exitRoom() {
 
     $.ajax({
         type:"PATCH",
-        url:"/api/chatting/rooms/" + roomId + "/" + userId,
+        url:"/api/chatting/rooms/" + roomId +"/participant",
         success:async function(response) {
             await disconnect();
             location.href="/view/chatting/list";

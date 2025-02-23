@@ -31,11 +31,6 @@ public class MentorService {
 
     private final RoomChangeEvent roomChangeEvent;
 
-    private final ToDto toDto;
-
-    private final SimpMessagingTemplate messagingTemplate;
-    private final StringRedisTemplate strTemplate;
-
     /*
         멘토가 단톡방 생성
      */
@@ -55,42 +50,52 @@ public class MentorService {
             }
             try {
                 roomChangeEvent.roomCreation(createdRoom);
-            } catch (Exception ignored) {    }
+            } catch (Exception ignored) {}
 
         } else {
             throw new ExpectedException(ErrorCode.MENTOR_CAN_CREATE_ROOM);
         }
     }
 
-
-
     /*
         개설자가 채팅방 종료
      */
+    @Transactional
     public void mentorEndRoom(Long userId, Long roomId) {
-        if (roomId != null) {
-            ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElse(null);
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+                .orElseThrow(() -> new ExpectedException(ErrorCode.ROOM_NOT_FOUND));
+
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null && user.getRole().name() == "MENTOR") {
             if (userId == chatRoom.getMentor().getId()) {
                 LocalDateTime endTime = LocalDateTime.now();
 
-                // 채팅방 종료시간 입력
-                chatRoom.stampEndTime(endTime);
-                chatRoomRepository.save(chatRoom);
+                try {
+                    // 채팅방 종료시간 입력
+                    chatRoom.stampEndTime(endTime);
+                    chatRoomRepository.save(chatRoom);
 
-                // 채팅방 참석자들 나가는 시간 입력
-                List<ChatParticipant> chatterList = chatParticipantRepository.findAllByRoomAndExitAt(chatRoom, null);
-                for (ChatParticipant chatter : chatterList) {
-                    chatter.stampExitTime(endTime);
+                    // 채팅방 참석자들 나가는 시간 입력
+                    List<ChatParticipant> chatterList = chatParticipantRepository.findAllByRoomAndExitAt(chatRoom, null);
+                    for (ChatParticipant chatter : chatterList) {
+                        chatter.stampExitTime(endTime);
+                    }
+                    chatParticipantRepository.saveAll(chatterList);
+                } catch (Exception e) {
+                    throw new ExpectedException(ErrorCode.FAIL_END_ROOM);
                 }
-                chatParticipantRepository.saveAll(chatterList);
 
-                // 해당 방 종료 알리기( 채팅방에 연결된 웹소켓 통신 종료시키기 )
-                String destination = "/chatRoom/" + roomId + "/door";
-                messagingTemplate.convertAndSend(destination, "DISCONNECT");
+                try {
+                    roomChangeEvent.roomEnd(roomId);
+                } catch (Exception ignored) {}
 
-                // 채팅방 목록에서 해당방 삭제
-                strTemplate.convertAndSend("room/end", roomId+"");
+            } else {
+                throw new ExpectedException(ErrorCode.ROOM_MENTOR_CAN_END);
             }
+        } else {
+            throw new ExpectedException(ErrorCode.MENTOR_CAN_END_ROOM);
         }
+
+
     }
 }

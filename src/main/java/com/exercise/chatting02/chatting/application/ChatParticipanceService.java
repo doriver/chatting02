@@ -37,24 +37,21 @@ public class ChatParticipanceService {
     public void chatterExitRoom(long roomId, long chatterId) {
         ChatRoom chatRoom = chatRoomRepository.findById(roomId)
                 .orElseThrow(() -> new ExpectedException(ErrorCode.ROOM_NOT_FOUND));
-        User participant = userRepository.findById(chatterId).orElse(null);
+        User chatter = userRepository.findById(chatterId).orElse(null);
 
-        if (participant != null && chatRoom != null) {
-            ChatParticipant chatParticipant = chatParticipantRepository.findByChatterAndRoomAndExitAt(participant, chatRoom, null).orElse(null);
-            if (chatParticipant != null) {
-                chatParticipant.stampExitTime(LocalDateTime.now());
-                try {
-                    chatParticipantRepository.save(chatParticipant);
-                } catch (Exception e) {
-                    throw new ExpectedException(ErrorCode.FAIL_EXIT_ROOM);
-                }
-
-                try {
-                    participantChangeEvent.inAndOut(0, roomId
-                            , chatParticipant.getId(), chatParticipant.getChatter().getNickname());
-                } catch (Exception ignored) {   }
+        ChatParticipant chatParticipant = chatParticipantRepository.findByChatterAndRoomAndExitAt(chatter, chatRoom, null).orElse(null);
+        if (chatParticipant != null) {
+            chatParticipant.stampExitTime(LocalDateTime.now());
+            try {
+                chatParticipantRepository.save(chatParticipant);
+            } catch (Exception e) {
+                throw new ExpectedException(ErrorCode.FAIL_EXIT_ROOM);
             }
-        }
+            try {
+                participantChangeEvent.inAndOut(0, roomId
+                        , chatParticipant.getId(), chatParticipant.getChatter().getNickname());
+            } catch (Exception ignored) {}
+        } // chatParticipant == null 인경우도 throw ex할필요없음, 프론트에서 location.href="/view/chatting/list"; 처리
     }
 
     /*
@@ -65,9 +62,9 @@ public class ChatParticipanceService {
                 .orElseThrow(() -> new ExpectedException(ErrorCode.ROOM_NOT_FOUND));
 
         User participant = userRepository.findById(uid).orElse(null);
-        Optional<ChatParticipant> attendance = chatParticipantRepository.findByChatterAndRoomAndExitAt(participant, chatRoom, null);
+        ChatParticipant chatAttendance = chatParticipantRepository.findByChatterAndRoomAndExitAt(participant, chatRoom, null).orElse(null);
         // 이미 참석해 있는경우는 변화x, 새롭게 참석하는 경우만 입장 로직 실행
-        if (attendance.isEmpty()) {
+        if (chatAttendance == null) {
             ChatParticipant chatter = ChatParticipant.builder()
                     .room(chatRoom).chatter(participant)
                     .build();
@@ -81,7 +78,7 @@ public class ChatParticipanceService {
             try {
                 participantChangeEvent.inAndOut(1, rid
                         , savedChatter.getId(), savedChatter.getChatter().getNickname());
-            } catch (Exception ignored) {     }
+            } catch (Exception ignored) {}
         }
     }
 }

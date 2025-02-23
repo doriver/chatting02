@@ -19,12 +19,10 @@ public class RoomChangeEvent {
 
     private final ToDto toDto;
 
-    /*
-       채팅방 목록 화면에 생성된 채팅방 추가
-     */
     public void roomCreation(ChatRoom createdRoom) {
         ChatRoomInfoResponse chatRoomInfoResponse = toDto.chatRoomEntityToDto(createdRoom);
         String message = convertToJson(chatRoomInfoResponse);
+        // 채팅방 목록 화면에 생성된 채팅방 추가
         strTemplate.convertAndSend("room/creation", message);
     }
 
@@ -34,5 +32,14 @@ public class RoomChangeEvent {
         } catch (Exception e) {
             throw new ExpectedException(ErrorCode.FAIL_JSON_CONVERT);
         }
+    }
+
+    public void roomEnd(Long roomId) {
+        // 해당 방 종료 알리기( 채팅방에 연결된 웹소켓 통신 종료시키기 )
+        String destination = "/chatRoom/" + roomId + "/door";
+        messagingTemplate.convertAndSend(destination, "DISCONNECT");
+
+        // 채팅방 목록에서 해당방 삭제
+        strTemplate.convertAndSend("room/end", roomId+"");
     }
 }

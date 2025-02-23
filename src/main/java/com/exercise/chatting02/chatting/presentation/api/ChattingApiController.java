@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,7 +25,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChattingApiController {
 
-    private final ChatRoomService chatRoomService;
     private final MentorService mentorService;
     private final ChatParticipanceService chatParticipanceService;
 
@@ -46,10 +46,10 @@ public class ChattingApiController {
         접근범위(권한) : 로그인
         단톡방에서 버튼(나가기)을 눌러야만 동작하게 설계되있음
      */
-    @PatchMapping("/rooms/{roomId}/{chatterId}")
+    @PatchMapping("/rooms/{roomId}/participant")
     @ResponseBody
-    public void exitRoom(@PathVariable("roomId") long roomId, @PathVariable("chatterId") long chatterId) {
-        chatParticipanceService.chatterExitRoom(roomId, chatterId);
+    public void exitRoom(@PathVariable("roomId") long roomId, @CurrentUser User user) {
+        chatParticipanceService.chatterExitRoom(roomId, user.getId());
     }
 
     /*
