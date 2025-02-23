@@ -4,10 +4,12 @@ import com.exercise.chatting02.chatting.application.ChatParticipanceService;
 import com.exercise.chatting02.chatting.application.ChatRoomService;
 import com.exercise.chatting02.chatting.application.MentorService;
 import com.exercise.chatting02.chatting.domain.model.ChatRoom;
+import com.exercise.chatting02.chatting.presentation.dto.request.RoomCreateRequest;
 import com.exercise.chatting02.common.annotation.CurrentUser;
 import com.exercise.chatting02.common.exception.ErrorCode;
 import com.exercise.chatting02.common.exception.ExpectedException;
 import com.exercise.chatting02.user.domain.model.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -64,13 +66,13 @@ public class ChattingApiController {
     /*
                 단체 채팅방 생성
         접근범위(권한) : mentor
-        validaton필요?
      */
     @PostMapping("/room")
     @ResponseBody
-    public void createRoom( @RequestParam("roomName") String roomName, @RequestParam("userLimit") int userLimit
+    public void createRoom(@Valid @RequestBody RoomCreateRequest roomCreateRequest
                             , @CurrentUser User user) {
-        mentorService.mentorCreateRoom(user.getId(), roomName, userLimit);
+        mentorService.mentorCreateRoom(user.getId()
+                , roomCreateRequest.getRoomName(), roomCreateRequest.getUserLimit());
     }
 
 }

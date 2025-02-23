@@ -56,7 +56,7 @@ function createRoom() {
             $.ajax({
                 type:"post",
                 url:"/api/chatting/room",
-                data: params,
+                data: JSON.stringify(params),
                 success:function(response) {
                     Swal.fire({
                         text: "새 채팅방이 개설되었습니다.",

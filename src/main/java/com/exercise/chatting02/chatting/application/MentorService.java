@@ -56,6 +56,7 @@ public class MentorService {
             try {
                 roomChangeEvent.roomCreation(createdRoom);
             } catch (Exception ignored) {    }
+
         } else {
             throw new ExpectedException(ErrorCode.MENTOR_CAN_CREATE_ROOM);
         }
