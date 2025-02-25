@@ -3,5 +3,16 @@
 ### 아직 security인증, 권한은 미구현
 <div>
   <img width="300" src="https://github.com/user-attachments/assets/06cec881-205e-4f9f-be7b-0fec33ce4595"> 
-  chatting, user 2개의 domain으로 구성
 </div>
+
+### 디렉토리 구조
+
+```
+├─chatting
+│  ├─application
+│  ├─domain
+│  └─presentation
+├─common
+├─springconfig
+└─user
+```
