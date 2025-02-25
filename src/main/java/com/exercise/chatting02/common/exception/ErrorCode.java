@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum ErrorCode {
 
-
-
     // 채팅
     FAIL_ROOM_CREATE(HttpStatus.INTERNAL_SERVER_ERROR, "단톡방 생성에 실패했습니다.")
     ,MENTOR_CAN_CREATE_ROOM(HttpStatus.FORBIDDEN, "멘토만이 단톡방을 생성할수 있습니다.")
@@ -29,6 +27,7 @@ public enum ErrorCode {
 
     private final HttpStatus httpStatus;
     private final String message;
+}
     /*
         // 검색
     INVALID_SEARCH_FIELD(HttpStatus.BAD_REQUEST, "잘못된 검색 속성입니다."),
@@ -72,4 +71,3 @@ public enum ErrorCode {
     // sse
     TOO_MANY_SSE_REQUESTS(HttpStatus.TOO_MANY_REQUESTS, "SSE 연결 요청이 너무 많습니다."),
      */
-}
