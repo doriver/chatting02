@@ -1,5 +1,6 @@
 package com.exercise.chatting02.springconfig.security;
 
+import com.exercise.chatting02.springconfig.security.userDetail.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity // Spring Security를 활성화함
 @RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final MyUserDetailsService myUserDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
