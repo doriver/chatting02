@@ -20,6 +20,8 @@ public enum ErrorCode {
 
     // 유저
     ,INVALID_ACCESS_LOGIN(HttpStatus.FORBIDDEN, "로그인이 필요합니다.")
+    ,FAIL_SIGN_UP(HttpStatus.INTERNAL_SERVER_ERROR, "회원가입에 실패했습니다.")
+    ,FAIL_SIGN_IN(HttpStatus.INTERNAL_SERVER_ERROR, "로그인에 실패했습니다.")
 
     //
     , FAIL_JSON_CONVERT(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류(json변환 실패)")

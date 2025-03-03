@@ -28,16 +28,12 @@ public class User {
 
     @NotNull
     private String password;
-//    @Column(name = "username")
-//    private String username;
-//
-//    @Column(name = "email")
-//    private String email;
-//
 
     @Builder
-    public User(String nickname) {
+    public User(String nickname, String password, Role role) {
         this.nickname = nickname;
+        this.password = password;
+        this.role = role;
     }
 
 }
