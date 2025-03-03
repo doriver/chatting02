@@ -1,5 +1,6 @@
 package com.exercise.chatting02.springconfig.security;
 
+import com.exercise.chatting02.springconfig.security.filter.TokenAuthenticationFilter;
 import com.exercise.chatting02.springconfig.security.userDetail.MyUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -8,9 +9,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.context.SecurityContextHolderFilter;
 
 @Configuration
-@EnableWebSecurity // Spring Security를 활성화함
+@EnableWebSecurity(debug = true) // 콘솔창에 필터체인등 detail 볼수 있음
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -29,7 +31,8 @@ public class SecurityConfig {
 //                    .requestMatchers().permitAll()
 //                    .requestMatchers().hasAuthority("MENTOR")
                     .anyRequest().permitAll())
-            .addFilter()
+            .addFilterAfter(new TokenAuthenticationFilter(myUserDetailsService)
+                    , SecurityContextHolderFilter.class)
 
         ;
         return http.build();
