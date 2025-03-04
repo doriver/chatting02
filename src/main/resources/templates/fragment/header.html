@@ -1,3 +1,8 @@
-<a href="/view/user/sign">로그인 화면</a> 
-<a href="/view/chatting/list">단톡방 목록</a>
-<a href="/user/sign-out">로그아웃</a>
+<h4 sec:authorize="isAuthenticated()">로그인됨 : <span sec:authentication="name">username</span> 님</h4>
+
+<ul class="nav nav-fill">
+    <a class="nav-link" href="/view/user/sign">로그인 화면</a>
+    <a class="nav-link" href="/view/chatting/list">단톡방 목록</a>
+    <a sec:authorize="isAuthenticated()" 
+        class="nav-link" href="/user/sign-out">로그아웃</a>
+</ul>

@@ -19,11 +19,9 @@
 <body>
     <div style="height: 50px;">
     </div>
-    <h3>회원가입, 로그인 toy버전으로 만들꺼</h3>
-    <h4 sec:authorize="isAuthenticated()">   로그인됨 : [[${nickname}]] 님</h4>
     <div th:replace="~{fragment/header}"></div>
     <div class="container">
-        <div class="row">
+        <div sec:authorize="isAnonymous()" class="row">
             <div class="col-2"></div>
             <div class="col-3">
                 <h4>로그인</h4>
@@ -41,6 +39,11 @@
                     onclick="signUp()">회원가입</button>
             </div>
             <div class="col-2"></div>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <h4>
+                로그인 되었습니다. 다른화면을 이용해주세요
+            </h4>
         </div>
     </div>
 </body>

@@ -21,8 +21,8 @@ function signIn() {
                 alert("로그인 실패");
             } else if (result === "success") {
                 alert("로그인 성공");
-                location.reload(true);
-                // location.href="/view/chatting/list";
+                // location.reload(true);
+                location.href="/view/chatting/list";
             }
         },
         error:function(xhr) {
