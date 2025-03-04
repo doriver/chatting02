@@ -12,6 +12,11 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.SecurityContextHolderFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
+
+import java.nio.charset.StandardCharsets;
+import java.util.regex.Pattern;
 
 @Configuration
 @EnableWebSecurity(debug = true) // 콘솔창에 필터체인등 detail 볼수 있음
@@ -33,12 +38,29 @@ public class SecurityConfig {
 //                    .requestMatchers().permitAll()
 //                    .requestMatchers().hasAuthority("MENTOR")
                     .anyRequest().permitAll())
+            .logout(logout -> logout
+                    .logoutUrl("/user/sign-out")
+                    .deleteCookies("chatting")
+                    .logoutSuccessUrl("/view/user/sign")
+            )
             .addFilterAfter(new TokenAuthenticationFilter(myUserDetailsService)
                     , SecurityContextHolderFilter.class)
 
         ;
         return http.build();
     }
+
+    @Bean // cookie헤더의 value값이 한글일때 에러났었는데 이거 해주니까 해결됨
+    public HttpFirewall httpFirewall() {
+        StrictHttpFirewall firewall = new StrictHttpFirewall();
+        Pattern allowed = Pattern.compile("[\\p{IsAssigned}&&[^\\p{IsControl}]]*");
+        firewall.setAllowedHeaderValues((header) -> {
+            String parsed = new String(header.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
+            return allowed.matcher(parsed).matches();
+        });
+        return firewall;
+    }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

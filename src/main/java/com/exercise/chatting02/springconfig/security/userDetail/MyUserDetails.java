@@ -17,7 +17,7 @@ public class MyUserDetails implements UserDetails {
         this.user = user;
         this.authorities = authorities;
     }
-    
+
     public User getUser() {
         return user;
     }
