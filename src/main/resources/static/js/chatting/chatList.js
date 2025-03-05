@@ -57,6 +57,7 @@ function createRoom() {
                 type:"post",
                 url:"/api/chatting/room",
                 data: JSON.stringify(params),
+                contentType: 'application/json;charset=utf-8',
                 success:function(response) {
                     Swal.fire({
                         text: "새 채팅방이 개설되었습니다.",
