@@ -20,13 +20,20 @@ public class SseChatListService {
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
 
     public void addEmitter(SseEmitter emitter) {
-        emitter.onCompletion(() -> emitters.remove(emitter));
-        emitter.onTimeout(() -> emitter.complete());
+        emitter.onCompletion(() -> {
+            emitters.remove(emitter);
+            log.info("emitter.onCompletion : {}", emitter);
+        });
+        emitter.onTimeout(() -> {
+            emitter.complete();
+            log.info("emitter.onTimeout : {}", emitter);
+        });
         emitter.onError((e) -> {
             emitter.complete();
             log.error("sse 채팅목록 에러 : {}", e.getMessage());
         });
         emitters.add(emitter);
+        log.info("add emitter: {}", emitter);
     }
 
     public void sendEventCountUp(String roomId) {

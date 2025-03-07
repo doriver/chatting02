@@ -19,6 +19,19 @@ eventSource.addEventListener("roomCreation", (event) => {
     showRoom(chatRoom);
 });
 
+// 페이지 벗어날때 sse연결 종료
+window.addEventListener("beforeunload", () => {
+    eventSource.close();
+    
+});
+function ab() {
+    console.log("eventSource :");
+    console.log(eventSource);
+}
+function as() {
+    eventSource.close();
+    console.log("eventSource.close()");
+}
 // 멘토권한 사용자가 단톡방 생성 
 function createRoom() {
 
@@ -155,8 +168,6 @@ function deleteRoom(roomId) {
     var target = chatRoomListBox.querySelector(".room-" + roomId);
     target.remove();
 }
-
-
 
 $(document).ready(function() {
 

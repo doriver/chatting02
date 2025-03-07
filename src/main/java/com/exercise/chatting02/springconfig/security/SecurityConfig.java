@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 @Configuration
-@EnableWebSecurity(debug = true) // 콘솔창에 필터체인등 detail 볼수 있음
+@EnableWebSecurity // (debug = true) 콘솔창에 필터체인등 detail 볼수 있음
 @RequiredArgsConstructor
 public class SecurityConfig {
 

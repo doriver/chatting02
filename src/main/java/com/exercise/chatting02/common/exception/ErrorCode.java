@@ -24,6 +24,9 @@ public enum ErrorCode {
     ,FAIL_SIGN_IN(HttpStatus.INTERNAL_SERVER_ERROR, "로그인에 실패했습니다.")
 
     //
+    ,FAIL_SSE_CONNECT(HttpStatus.INTERNAL_SERVER_ERROR, "서버와의 연결이 원할하지 않습니다.")
+
+    //
     , FAIL_JSON_CONVERT(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류(json변환 실패)")
     ;
 
