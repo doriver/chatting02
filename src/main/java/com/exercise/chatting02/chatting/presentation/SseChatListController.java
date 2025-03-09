@@ -39,7 +39,8 @@ public class SseChatListController {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleSseException(Exception e) {
+    public void handleSseException(Exception e) {
+        
         if (e instanceof AsyncRequestTimeoutException) {
             log.info("SseEmitter 타임아웃, AsyncRequestTimeoutException :{}", e.getMessage());
         }
@@ -51,9 +52,5 @@ public class SseChatListController {
         } else {
             log.error("SSE 예외 발생 ", e);
         }
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .contentType(MediaType.TEXT_EVENT_STREAM)
-                .body("data: SSE Error - " + e.getMessage() + "\n\n");
     }
 }
