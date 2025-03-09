@@ -21,8 +21,9 @@ eventSource.addEventListener("roomCreation", (event) => {
 
 // 페이지 벗어날때 sse연결 종료
 window.addEventListener("beforeunload", () => {
-    eventSource.close();
-    
+    if (window.location.pathname === "/view/chatting/list") {
+        eventSource.close();
+    }
 });
 function ab() {
     console.log("eventSource :");

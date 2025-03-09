@@ -32,7 +32,7 @@ public class SseChatListController {
         try { // 만료시간이 되면 브라우저에서 자동으로 서버에 재연결 요청, Emitter를 생성하고 나서 만료 시간까지 아무런 데이터도 보내지 않으면 재연결 요청시 503 Service Unavailable 에러가 발생할 수 있다.
             emitter.send(SseEmitter.event().name("connect").data("connected!"));
         } catch (IOException e) {
-            emitter.completeWithError(e);
+            emitter.complete();
             throw new RuntimeException(e);
         }
         return emitter;
@@ -42,8 +42,14 @@ public class SseChatListController {
     public ResponseEntity<String> handleSseException(Exception e) {
         if (e instanceof AsyncRequestTimeoutException) {
             log.info("SseEmitter 타임아웃, AsyncRequestTimeoutException :{}", e.getMessage());
+        }
+        else if (e instanceof  IOException) {
+            if (e.getMessage().equals("현재 연결은 사용자의 호스트 시스템의 소프트웨어의 의해 중단되었습니다")) {
+            } else {
+                log.error("SSE 예외 발생 ", e);
+            }
         } else {
-            log.error("SSE 예외 발생: ", e);
+            log.error("SSE 예외 발생 ", e);
         }
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

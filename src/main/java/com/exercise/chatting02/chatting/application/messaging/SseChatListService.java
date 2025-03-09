@@ -22,36 +22,37 @@ public class SseChatListService {
     public void addEmitter(SseEmitter emitter) {
         emitter.onCompletion(() -> {
             emitters.remove(emitter);
-            log.info("emitter.onCompletion : {}", emitter);
+            log.info("SseEmitter.onCompletion : {}", emitter);
         });
         emitter.onTimeout(() -> {
             emitter.complete();
-            log.info("emitter.onTimeout : {}", emitter);
+            log.info("SseEmitter.onTimeout : {}", emitter);
         });
         emitter.onError((e) -> {
             emitter.complete();
-            log.error("sse 채팅목록 에러 : {}", e.getMessage());
+            log.error("SseEmitter.onError: {} -- {}", emitter, e.getMessage());
+//            log.error("emitter.onError", e);
         });
         emitters.add(emitter);
-        log.info("add emitter: {}", emitter);
+        log.info("add SseEmitter: {}", emitter);
     }
 
     public void sendEventCountUp(String roomId) {
         for (SseEmitter emitter : emitters) {
-            try {
-                emitter.send(SseEmitter.event().name("countUp").data(roomId));
-            } catch (IOException e) {
-                emitter.complete();
+            if (emitter != null) {
+                try {
+                    emitter.send(SseEmitter.event().name("countUp").data(roomId));
+                } catch (IOException ignored) { }
             }
         }
     }
 
     public void sendEventCountDown(String roomId) {
         for (SseEmitter emitter : emitters) {
-            try {
-                emitter.send(SseEmitter.event().name("countDown").data(roomId));
-            } catch (IOException e) {
-                emitter.complete();
+            if (emitter != null) {
+                try {
+                    emitter.send(SseEmitter.event().name("countDown").data(roomId));
+                } catch (IOException ignored) { }
             }
         }
     }

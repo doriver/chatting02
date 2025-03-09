@@ -34,6 +34,7 @@ public class GlobalExceptionHandler {
             builder.append(" 입력된 값: [");
             builder.append(fieldError.getRejectedValue());
             builder.append("]");
+            builder.append("\n");
         }
 
         return ResponseEntity
