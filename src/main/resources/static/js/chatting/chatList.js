@@ -1,23 +1,27 @@
 let loginId;
+let eventSource; // sse EventSource객체
 
-let eventSource = new EventSource("/sse/chatList"); // controller 경로
+function sseSetting() {
+    eventSource = new EventSource("/sse/chatList"); // controller 경로
 
-eventSource.addEventListener("countUp", (event) => {
-    upUserCount(event.data);
-});
+    eventSource.addEventListener("countUp", (event) => {
+        upUserCount(event.data);
+    });
+    
+    eventSource.addEventListener("countDown", (event) => {
+        downUserCount(event.data);
+    });
+    
+    eventSource.addEventListener("roomEnd", (event) => {
+        deleteRoom(event.data);
+    });
+    
+    eventSource.addEventListener("roomCreation", (event) => {
+        const chatRoom = JSON.parse(event.data); // JSON으로 파싱
+        showRoom(chatRoom);
+    });
+}
 
-eventSource.addEventListener("countDown", (event) => {
-    downUserCount(event.data);
-});
-
-eventSource.addEventListener("roomEnd", (event) => {
-    deleteRoom(event.data);
-});
-
-eventSource.addEventListener("roomCreation", (event) => {
-    const chatRoom = JSON.parse(event.data); // JSON으로 파싱
-    showRoom(chatRoom);
-});
 
 // 페이지 벗어날때 sse연결 종료
 window.addEventListener("beforeunload", () => {
@@ -171,7 +175,7 @@ function deleteRoom(roomId) {
 }
 
 $(document).ready(function() {
-
+    sseSetting();
     // 로그인한 사용자id
     loginId = $(".userId").val();  
 

@@ -40,7 +40,7 @@ public class SseChatListController {
 
     @ExceptionHandler(Exception.class)
     public void handleSseException(Exception e) {
-        
+
         if (e instanceof AsyncRequestTimeoutException) {
             log.info("SseEmitter 타임아웃, AsyncRequestTimeoutException :{}", e.getMessage());
         }
