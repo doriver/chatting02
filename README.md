@@ -1,6 +1,5 @@
 # Toy 단체 채팅
 ## Stomp on Websocket 과 SSE를 통한 실시간 데이터 처리
-### 아직 security인증, 권한은 미구현
 <div>
   <img width="300" src="https://github.com/user-attachments/assets/06cec881-205e-4f9f-be7b-0fec33ce4595"> 
 </div>
