@@ -21,11 +21,20 @@ public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
     private final UserRepository userRepository;
 
+
     /*
-        채팅메시지 저장하기
+        채팅메시지 redis에 저장
+     */
+    public void saveMessageRedis() {
+
+    }
+
+
+    /*
+        채팅메시지 MySQL에 저장
         save관련해서, getReferenceById()로 최적화 하는것 고려
      */
-    public void saveMessage(long roomId, long senderId, String message) {
+    public void saveMessageRDB(long roomId, long senderId, String message) {
         User user = userRepository.findById(senderId).orElse(null);
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElse(null);
         ChatParticipant chatParticipant = chatParticipantRepository.findByChatterAndRoomAndExitAt(user, chatRoom, null).orElse(null);
