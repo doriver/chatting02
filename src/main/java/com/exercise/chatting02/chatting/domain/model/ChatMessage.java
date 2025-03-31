@@ -28,13 +28,14 @@ public class ChatMessage {
     @NotNull
     private String message;
 
-    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)
+    @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime sendAt;
 
     @Builder
-    public ChatMessage(ChatRoom room, ChatParticipant sender, String message) {
+    public ChatMessage(ChatRoom room, ChatParticipant sender, String message, LocalDateTime sendAt) {
         this.room = room;
         this.sender = sender;
         this.message = message;
+        this.sendAt = sendAt;
     }
 }

@@ -15,7 +15,10 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,16 +65,16 @@ public class ChatMessageService {
 
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElse(null);
 
-        List<ChatMessage> messageList = null;
+        List<ChatMessage> messageList = new LinkedList<>();
+        Map<Long, ChatParticipant> tmpSender = new HashMap<>();
         for (ChatMessageRedisDTO chatMessageRedisDTO : messagesFromRedis) {
-
             User user = userRepository.findById(chatMessageRedisDTO.getSenderId()).orElse(null);
             ChatParticipant chatParticipant = chatParticipantRepository.findByChatterAndRoomAndExitAt(user, chatRoom, null).orElse(null);
 
             ChatMessage dbChatMessage = ChatMessage.builder()
-                    .room(chatRoom).sender(chatParticipant).message(chatMessageRedisDTO.getMessage()).
+                    .room(chatRoom).sender(chatParticipant).message(chatMessageRedisDTO.getMessage()).sendAt(chatMessageRedisDTO.getSendedAt())
                     .build();
-
+            messageList.add(dbChatMessage);
         }
 
         chatMessageRepository.saveAll(messageList);
@@ -89,7 +92,7 @@ public class ChatMessageService {
 
         if (chatParticipant != null && chatRoom != null) {
             ChatMessage dbChatMessage = ChatMessage.builder()
-                    .room(chatRoom).sender(chatParticipant).message(message)
+                    .room(chatRoom).sender(chatParticipant).message(message).sendAt(LocalDateTime.now())
                     .build();
             chatMessageRepository.save(dbChatMessage);
         } else {

@@ -29,6 +29,8 @@ public class MentorService {
     private final ChatRoomRepository chatRoomRepository;
     private final ChatParticipantRepository chatParticipantRepository;
 
+    private final ChatMessageService chatMessageService;
+
     private final RoomChangeEvent roomChangeEvent;
 
     /*
@@ -71,6 +73,9 @@ public class MentorService {
                 LocalDateTime endTime = LocalDateTime.now();
 
                 try {
+                    // 채팅메시지들 RDB에 한꺼번에 저장
+                    chatMessageService.saveAllMessagesRDB(roomId);
+
                     // 채팅방 종료시간 입력
                     chatRoom.stampEndTime(endTime);
                     chatRoomRepository.save(chatRoom);
