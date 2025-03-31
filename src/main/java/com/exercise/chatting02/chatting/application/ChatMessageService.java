@@ -68,9 +68,15 @@ public class ChatMessageService {
         List<ChatMessage> messageList = new LinkedList<>();
         Map<Long, ChatParticipant> tmpSender = new HashMap<>();
         for (ChatMessageRedisDTO chatMessageRedisDTO : messagesFromRedis) {
-            User user = userRepository.findById(chatMessageRedisDTO.getSenderId()).orElse(null);
-            ChatParticipant chatParticipant = chatParticipantRepository.findByChatterAndRoomAndExitAt(user, chatRoom, null).orElse(null);
-
+            Long senderId = chatMessageRedisDTO.getSenderId();
+            ChatParticipant chatParticipant = null;
+            if (tmpSender.containsKey(senderId)) {
+                chatParticipant = tmpSender.get(senderId);
+            } else {
+                User user = userRepository.findById(senderId).orElse(null);
+                chatParticipant = chatParticipantRepository.findByChatterAndRoomAndExitAt(user, chatRoom, null).orElse(null);
+                tmpSender.put(senderId, chatParticipant);
+            }
             ChatMessage dbChatMessage = ChatMessage.builder()
                     .room(chatRoom).sender(chatParticipant).message(chatMessageRedisDTO.getMessage()).sendAt(chatMessageRedisDTO.getSendedAt())
                     .build();
