@@ -30,9 +30,9 @@ public class StompChattingController {
         String message = sendMessage.getMessage();
         LocalDateTime sendedAt = LocalDateTime.now();
 
+        chatMessageService.saveMessageRedis(roomId
+                , new ChatMessageRedisDTO(senderId, message, sendedAt));
         try {
-            chatMessageService.saveMessageRedis(roomId
-                    , new ChatMessageRedisDTO(senderId, message, sendedAt));
         } catch(Exception e) {
             log.error("roomId={} 에서 채팅메시지 저장 살패 senderId={}", roomId, senderId);
         }
