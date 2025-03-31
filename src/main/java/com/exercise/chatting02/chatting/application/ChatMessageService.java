@@ -85,6 +85,8 @@ public class ChatMessageService {
 
         chatMessageRepository.saveAll(messageList);
 
+        chatMessageRedisTemplate.delete("room:" + roomId);
+
     }
 
     /*
