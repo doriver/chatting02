@@ -15,3 +15,4 @@
 ├─springconfig
 └─user
 ```
+### 채팅방 종료 기능 : [MentorService.java](https://github.com/doriver/chatting02/blob/master/src/main/java/com/exercise/chatting02/chatting/application/MentorService.java#L66)
