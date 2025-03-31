@@ -91,6 +91,7 @@ public class MentorService {
                 }
 
                 try {
+                    // websocket연결 끊기 + 채팅방 목록view에서 방 삭제
                     roomChangeEvent.roomEnd(roomId);
                 } catch (Exception ignored) {}
 

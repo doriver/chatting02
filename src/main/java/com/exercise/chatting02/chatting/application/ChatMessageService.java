@@ -48,10 +48,10 @@ public class ChatMessageService {
     public List<ChatMessageRedisDTO> getMessagesFromRedis(long roomId) {
         String key = "room:" + roomId;
 
-        // Redis List 값 가져오기
+        // Redis에서 value값인 JSON 역직렬화하여 List값 으로 가져오기
         List<Object> messages = chatMessageRedisTemplate.opsForList().range(key, 0, -1);
 
-        // JSON 역직렬화하여 List<ChatMessageRedisDTO>로 변환
+        // List<ChatMessageRedisDTO>로 변환
         return messages.stream()
                 .map(obj -> (ChatMessageRedisDTO) obj)
                 .collect(Collectors.toList());
@@ -90,6 +90,7 @@ public class ChatMessageService {
     }
 
     /*
+        레거시 코드
         개별 채팅메시지 MySQL에 저장
         save관련해서, getReferenceById()로 최적화 하는것 고려
      */
