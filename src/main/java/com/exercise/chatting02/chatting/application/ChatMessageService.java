@@ -57,7 +57,24 @@ public class ChatMessageService {
     /*
         채팅방 종료시 RDB에 한꺼번에 저장
      */
-    public void saveMessagesDB(long roomId, long senderId, String message) {
+    public void saveAllMessagesRDB(long roomId) {
+        List<ChatMessageRedisDTO> messagesFromRedis = getMessagesFromRedis(roomId);
+
+        ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElse(null);
+
+        List<ChatMessage> messageList = null;
+        for (ChatMessageRedisDTO chatMessageRedisDTO : messagesFromRedis) {
+
+            User user = userRepository.findById(chatMessageRedisDTO.getSenderId()).orElse(null);
+            ChatParticipant chatParticipant = chatParticipantRepository.findByChatterAndRoomAndExitAt(user, chatRoom, null).orElse(null);
+
+            ChatMessage dbChatMessage = ChatMessage.builder()
+                    .room(chatRoom).sender(chatParticipant).message(chatMessageRedisDTO.getMessage()).
+                    .build();
+
+        }
+
+        chatMessageRepository.saveAll(messageList);
 
     }
 
