@@ -48,7 +48,7 @@ public class ChatMessageService {
     public List<ChatMessageRedisDTO> getMessagesFromRedis(long roomId) {
         String key = "room:" + roomId;
 
-        // Redis에서 value값인 JSON 역직렬화하여 List값 으로 가져오기
+        // Redis에서 value값인 JSON을 역직렬화하여 List값 으로 가져오기
         List<Object> messages = chatMessageRedisTemplate.opsForList().range(key, 0, -1);
 
         // List<ChatMessageRedisDTO>로 변환
@@ -58,15 +58,16 @@ public class ChatMessageService {
     }
 
     /*
-        채팅방 종료시 RDB에 한꺼번에 저장
+        채팅방 종료시 채팅메시지들 RDB에 한꺼번에 저장
      */
     public void saveAllMessagesRDB(long roomId) {
+        // 채팅메시지들 redis에서 가져온거
         List<ChatMessageRedisDTO> messagesFromRedis = getMessagesFromRedis(roomId);
 
         ChatRoom chatRoom = chatRoomRepository.findById(roomId).orElse(null);
 
         List<ChatMessage> messageList = new LinkedList<>();
-        Map<Long, ChatParticipant> tmpSender = new HashMap<>();
+        Map<Long, ChatParticipant> tmpSender = new HashMap<>(); // ChatMessage save위해 필요한 ChatParticipant들 잠깐 보관 위해
         for (ChatMessageRedisDTO chatMessageRedisDTO : messagesFromRedis) {
             Long senderId = chatMessageRedisDTO.getSenderId();
             ChatParticipant chatParticipant = null;
@@ -77,16 +78,16 @@ public class ChatMessageService {
                 chatParticipant = chatParticipantRepository.findByChatterAndRoomAndExitAt(user, chatRoom, null).orElse(null);
                 tmpSender.put(senderId, chatParticipant);
             }
+            
             ChatMessage dbChatMessage = ChatMessage.builder()
                     .room(chatRoom).sender(chatParticipant).message(chatMessageRedisDTO.getMessage()).sendAt(chatMessageRedisDTO.getSendedAt())
                     .build();
             messageList.add(dbChatMessage);
         }
-
+        // MySQL에 채팅메시지들 한꺼번에 저장
         chatMessageRepository.saveAll(messageList);
-
+        // Redis에서 채팅메시지들 삭제
         chatMessageRedisTemplate.delete("room:" + roomId);
-
     }
 
     /*
