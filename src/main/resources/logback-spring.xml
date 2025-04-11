@@ -3,6 +3,7 @@
 
     <timestamp key="ToDay" datePattern="yyyyMMdd" />
 
+    <!-- 콘솔출력위한 로깅 설정 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
@@ -11,9 +12,12 @@
         </layout>
     </appender>
 
+    <!-- 파일 출력위한 로깅 설정 -->
     <appender name="FILE1" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>info</level>
+            <!-- 위 로그레벨일 경우와 아닌경우, accept: 로그출력 , deny : 로그 출력 안함 -->
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
@@ -22,7 +26,7 @@
             <fileNamePattern>
                 ${LOG_PATH}/info/%d{yyyyMMdd}_${LOG_FILE_NAME}_%i.log
             </fileNamePattern>
-            <maxFileSize>10MB</maxFileSize>
+            <maxFileSize>5MB</maxFileSize>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -41,7 +45,7 @@
             <fileNamePattern>
                 ${LOG_PATH}/error/%d{yyyyMMdd}_${LOG_FILE_NAME}_%i.log
             </fileNamePattern>
-            <maxFileSize>10MB</maxFileSize>
+            <maxFileSize>5MB</maxFileSize>
             <maxHistory>30</maxHistory>
         </rollingPolicy>
         <encoder>
@@ -49,6 +53,7 @@
         </encoder>
     </appender>
 
+    <!-- 루트 로거 -->
     <root level="INFO">
         <appender-ref ref="FILE1" />
         <appender-ref ref="FILE2" />
