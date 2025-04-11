@@ -1,8 +1,5 @@
 <configuration>
     <property resource="logback-variables.properties" />
-<!--
-    <timestamp key="ToDay" datePattern="yyyyMMdd" />
--->
 
     <!-- 콘솔출력위한 로깅 설정 -->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
