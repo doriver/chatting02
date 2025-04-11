@@ -17,6 +17,7 @@ public enum ErrorCode {
     ,FAIL_EXIT_ROOM(HttpStatus.INTERNAL_SERVER_ERROR, "단톡방 퇴장에 실패했습니다.")
     ,FAIL_END_ROOM(HttpStatus.INTERNAL_SERVER_ERROR, "단톡방 종료에 실패했습니다.")
     ,ROOM_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 단톡방입니다.")
+    ,ROOM_USER_LIMIT(HttpStatus.BAD_REQUEST, "입장가능한 인원을 초과했습니다.")
 
     // 유저
     ,INVALID_ACCESS_LOGIN(HttpStatus.FORBIDDEN, "로그인이 필요합니다.")

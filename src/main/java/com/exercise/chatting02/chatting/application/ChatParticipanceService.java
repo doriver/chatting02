@@ -61,6 +61,12 @@ public class ChatParticipanceService {
         ChatRoom chatRoom = chatRoomRepository.findById(rid)
                 .orElseThrow(() -> new ExpectedException(ErrorCode.ROOM_NOT_FOUND));
 
+        // 입장 제한 로직
+        Long currentParticipants = chatParticipantRepository.countByRoomAndExitAt(chatRoom, null);
+        if (currentParticipants >= chatRoom.getUserLimit()) {
+            throw new ExpectedException(ErrorCode.ROOM_USER_LIMIT);
+        }
+
         User participant = userRepository.findById(uid).orElse(null);
         ChatParticipant chatAttendance = chatParticipantRepository.findByChatterAndRoomAndExitAt(participant, chatRoom, null).orElse(null);
         // 이미 참석해 있는경우는 변화x, 새롭게 참석하는 경우만 입장 로직 실행

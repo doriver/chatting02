@@ -11,10 +11,10 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        format_sql: 'false'
+        format_sql: 'true'
         use_sql_comments: 'false'
         auto_quote_keyword: 'true'
-        show_sql: 'false'
+        show_sql: 'true'
         default_batch_fetch_size: 10
     database-platform: org.hibernate.dialect.MySQLDialect
   redis:
