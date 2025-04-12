@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -53,9 +54,9 @@ public class ChattingViewController {
         접근범위(권한) : 로그인
         @PostMapping("/participant/{rid}") enterRoom() 에서만 접근가능 하도록 설계됨
      */
-    @GetMapping("/room")
-    public String chatView(@RequestParam("rid") Long rid, @CurrentUser User user, Model model) {
-        chatRoomService.roomViewSetting(rid, model);
+    @GetMapping("/rooms/{roomId}")
+    public String chatView(@PathVariable("roomId") long roomId, @CurrentUser User user, Model model) {
+        chatRoomService.roomViewSetting(roomId, model);
 
         model.addAttribute("userId", user.getId());
         model.addAttribute("nickname", user.getNickname());

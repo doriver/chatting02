@@ -33,12 +33,11 @@ public class ChattingApiController {
         접근범위(권한) : 로그인
         단톡방 목록에서 단톡방별로, 버튼(참여)을 눌러야만 동작하게 설계되있음
      */
-    @PostMapping("/participant/{rid}")
-    public String enterRoom(@PathVariable("rid") long rid
-                            , @CurrentUser User user, RedirectAttributes reAtr) {
-        chatParticipanceService.userEnterRoom(rid, user.getId());
-        reAtr.addAttribute("rid", rid);
-        return "redirect:/view/chatting/room";
+    @PostMapping("/participants/rooms/{roomId}")
+    public String enterRoom(@PathVariable("roomId") long roomId
+                            , @CurrentUser User user) {
+        chatParticipanceService.userEnterRoom(roomId, user.getId());
+        return "redirect:/view/chatting/rooms/" + roomId;
     }
 
     /*
@@ -46,7 +45,7 @@ public class ChattingApiController {
         접근범위(권한) : 로그인
         단톡방에서 버튼(나가기)을 눌러야만 동작하게 설계되있음
      */
-    @PatchMapping("/rooms/{roomId}/participant")
+    @PatchMapping("/participants/rooms/{roomId}")
     @ResponseBody
     public void exitRoom(@PathVariable("roomId") long roomId, @CurrentUser User user) {
         chatParticipanceService.chatterExitRoom(roomId, user.getId());
@@ -67,7 +66,7 @@ public class ChattingApiController {
                 단체 채팅방 생성
         접근범위(권한) : mentor
      */
-    @PostMapping("/room")
+    @PostMapping("/rooms")
     @ResponseBody
     public void createRoom(@Valid @RequestBody RoomCreateRequest roomCreateRequest
                             , @CurrentUser User user) {
