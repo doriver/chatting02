@@ -4,7 +4,7 @@ import com.exercise.chatting02.chatting.application.ChatMessageService;
 import com.exercise.chatting02.chatting.domain.dto.ChatMessageRedisDTO;
 import com.exercise.chatting02.chatting.presentation.dto.message.RecieveMessage;
 import com.exercise.chatting02.chatting.presentation.dto.message.SendMessage;
-import com.exercise.chatting02.common.TimeFormat;
+import com.exercise.chatting02.common.utils.TimeFormat;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;

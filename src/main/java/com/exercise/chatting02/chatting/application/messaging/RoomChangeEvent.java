@@ -2,7 +2,7 @@ package com.exercise.chatting02.chatting.application.messaging;
 
 import com.exercise.chatting02.chatting.domain.model.ChatRoom;
 import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomInfoResponse;
-import com.exercise.chatting02.common.ToDto;
+import com.exercise.chatting02.common.utils.ToDto;
 import com.exercise.chatting02.common.exception.ErrorCode;
 import com.exercise.chatting02.common.exception.ExpectedException;
 import com.fasterxml.jackson.databind.ObjectMapper;

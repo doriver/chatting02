@@ -1,4 +1,4 @@
-package com.exercise.chatting02.common;
+package com.exercise.chatting02.common.utils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

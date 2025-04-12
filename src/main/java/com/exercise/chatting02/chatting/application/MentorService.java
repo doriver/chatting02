@@ -5,16 +5,11 @@ import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
 import com.exercise.chatting02.chatting.domain.model.ChatRoom;
 import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
 import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
-import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomInfoResponse;
-import com.exercise.chatting02.common.ToDto;
 import com.exercise.chatting02.common.exception.ErrorCode;
 import com.exercise.chatting02.common.exception.ExpectedException;
 import com.exercise.chatting02.user.domain.model.User;
 import com.exercise.chatting02.user.domain.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,4 +1,4 @@
-package com.exercise.chatting02.common;
+package com.exercise.chatting02.common.utils;
 
 import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
 import com.exercise.chatting02.chatting.domain.model.ChatRoom;

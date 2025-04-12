@@ -7,7 +7,7 @@ import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
 import com.exercise.chatting02.chatting.presentation.dto.response.ChatRoomInfoResponse;
 import com.exercise.chatting02.chatting.presentation.dto.response.ParticipantDTO;
 import com.exercise.chatting02.chatting.presentation.dto.response.RoomViewResponse;
-import com.exercise.chatting02.common.ToDto;
+import com.exercise.chatting02.common.utils.ToDto;
 import com.exercise.chatting02.common.exception.ErrorCode;
 import com.exercise.chatting02.common.exception.ExpectedException;
 
