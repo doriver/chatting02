@@ -73,7 +73,7 @@ function createRoom() {
                         }
             $.ajax({
                 type:"post",
-                url:"/api/chatting/room",
+                url:"/api/chatting/rooms",
                 data: JSON.stringify(params),
                 contentType: 'application/json;charset=utf-8',
                 success:function(response) {

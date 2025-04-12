@@ -72,7 +72,7 @@
                         </div>
                         
                         <form sec:authorize="isAuthenticated()"
-                            th:action="@{/api/chatting/participant/{roomId}(roomId=${chatRoom.id})}"
+                            th:action="@{/api/chatting/participants/rooms/{roomId}(roomId=${chatRoom.id})}"
                             method="post">
                             <button type="submit"> 단톡 참석 </button>
                         </form>
