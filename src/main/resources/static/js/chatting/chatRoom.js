@@ -173,7 +173,7 @@ function exitRoom() {
 
     $.ajax({
         type:"PATCH",
-        url:"/api/chatting/participants/rooms/" + roomId,
+        url:"/chatting/participants/rooms/" + roomId,
         success:async function(response) {
             await disconnect();
             location.href="/view/chatting/list";
@@ -191,7 +191,7 @@ function endRoom() {
     if (userId === roomMentorId) {
         $.ajax({
             type:"PATCH",
-            url:"/api/chatting/rooms/" + roomId ,
+            url:"/chatting/rooms/" + roomId ,
             success:function(response) { },
             error:function(xhr) {
                 let response = xhr.responseJSON;

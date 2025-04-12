@@ -21,7 +21,7 @@ import java.util.List;
 
 @Slf4j
 @Controller
-@RequestMapping("/api/chatting")
+@RequestMapping("/chatting")
 @RequiredArgsConstructor
 public class ChattingApiController {
 
