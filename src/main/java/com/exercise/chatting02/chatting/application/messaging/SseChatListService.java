@@ -18,6 +18,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class SseChatListService {
 
     private final List<SseEmitter> emitters = new CopyOnWriteArrayList<>();
+    // roomId별로 SseEmitter들 따로 저장해야 할수도
 
     public void addEmitter(SseEmitter emitter) {
         emitter.onCompletion(() -> {

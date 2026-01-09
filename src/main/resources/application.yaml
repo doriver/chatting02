@@ -5,7 +5,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/mychat02?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password: qlqjs
+    password: root
   jpa:
     hibernate:
       ddl-auto: update
