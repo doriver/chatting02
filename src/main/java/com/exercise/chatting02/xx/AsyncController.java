@@ -1,11 +1,8 @@
-package com.exercise.chatting02.zzzPractice.Async;
+package com.exercise.chatting02.xx;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequiredArgsConstructor

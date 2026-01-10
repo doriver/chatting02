@@ -1,4 +1,4 @@
-package com.exercise.chatting02.zzzPractice.Async;
+package com.exercise.chatting02.xx;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -10,7 +10,7 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class AsyncService {
 
-    @Async
+    @Async("chatMessageSaveTaskExecutor")
     public void doLongTask() {
         log.info("비동기 작업 시작 – Thread: {}", Thread.currentThread().getName());
         try {
