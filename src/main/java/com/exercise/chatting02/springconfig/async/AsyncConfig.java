@@ -11,13 +11,13 @@ import java.util.concurrent.Executor;
 @Configuration
 public class AsyncConfig {
 
-    @Bean(name = "chatMessageSaveTaskExecutor")
-    public Executor chatMessageSaveTaskExecutor() {
+    @Bean(name = "roomEndTaskExecutor")
+    public Executor roomEndTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(5);       // 기본 5명은 항상 대기
         executor.setMaxPoolSize(10);      // 너무 바쁘면 10명까지 늘림
         executor.setQueueCapacity(50);   // 대기실은 50명까지
-        executor.setThreadNamePrefix("chatMessageSaveAsync-"); // 로그에서 확인용
+        executor.setThreadNamePrefix("roomEndAsync-"); // 로그에서 확인용
         executor.initialize();
         return executor;
     }

@@ -39,7 +39,10 @@ public class RoomChangeEvent {
         String destination = "/chatRoom/" + roomId + "/door";
         messagingTemplate.convertAndSend(destination, "DISCONNECT");
 
-        // 채팅방 목록에서 해당방 삭제
-        strTemplate.convertAndSend("room/end", roomId+"");
+        try {
+            // 채팅방 목록에서 해당방 삭제
+            strTemplate.convertAndSend("room/end", roomId+"");
+        } catch (Exception ignored) {}
+
     }
 }

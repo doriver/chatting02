@@ -3,8 +3,10 @@ package com.exercise.chatting02.chatting.application;
 import com.exercise.chatting02.chatting.application.messaging.RoomChangeEvent;
 import com.exercise.chatting02.chatting.domain.model.ChatParticipant;
 import com.exercise.chatting02.chatting.domain.model.ChatRoom;
+import com.exercise.chatting02.chatting.domain.model.EndRoom;
 import com.exercise.chatting02.chatting.domain.repository.ChatParticipantRepository;
 import com.exercise.chatting02.chatting.domain.repository.ChatRoomRepository;
+import com.exercise.chatting02.chatting.domain.repository.EndRoomRepository;
 import com.exercise.chatting02.common.exception.ErrorCode;
 import com.exercise.chatting02.common.exception.ExpectedException;
 import com.exercise.chatting02.user.domain.model.User;
@@ -22,10 +24,9 @@ public class MentorService {
 
     private final UserRepository userRepository;
     private final ChatRoomRepository chatRoomRepository;
-    private final ChatParticipantRepository chatParticipantRepository;
+    private final EndRoomRepository endRoomRepository;
 
-    private final ChatMessageService chatMessageService;
-
+    private final ChatRoomService chatRoomService;
     private final RoomChangeEvent roomChangeEvent;
 
     /*
@@ -63,32 +64,26 @@ public class MentorService {
                 .orElseThrow(() -> new ExpectedException(ErrorCode.ROOM_NOT_FOUND));
 
         User user = userRepository.findById(userId).orElse(null);
-        if (user != null && user.getRole().name() == "MENTOR") {
-            if (userId == chatRoom.getMentor().getId()) {
+        if (user != null && user.getRole().name().equals("MENTOR")) {
+            if (userId.equals(chatRoom.getMentor().getId())) {
                 LocalDateTime endTime = LocalDateTime.now();
-
+                EndRoom endRoom = null;
                 try {
-                    // 채팅메시지들 RDB에 한꺼번에 저장
-                    chatMessageService.saveAllMessagesRDB(roomId);
+                    // 채팅방 종료에서, 비동기 작업을 관리할 데이터
+                    endRoom = endRoomRepository.save(new EndRoom(roomId, endTime));
 
                     // 채팅방 종료시간 입력
                     chatRoom.stampEndTime(endTime);
                     chatRoomRepository.save(chatRoom);
 
-                    // 채팅방 참석자들 나가는 시간 입력
-                    List<ChatParticipant> chatterList = chatParticipantRepository.findAllByRoomAndExitAt(chatRoom, null);
-                    for (ChatParticipant chatter : chatterList) {
-                        chatter.stampExitTime(endTime);
-                    }
-                    chatParticipantRepository.saveAll(chatterList);
-                } catch (Exception e) {
+                    // websocket연결 끊기 + 채팅방 목록view에서 방 삭제
+                    roomChangeEvent.roomEnd(roomId);
+                } catch (RuntimeException e) {
                     throw new ExpectedException(ErrorCode.FAIL_END_ROOM);
                 }
 
-                try {
-                    // websocket연결 끊기 + 채팅방 목록view에서 방 삭제
-                    roomChangeEvent.roomEnd(roomId);
-                } catch (Exception ignored) {}
+                // 비동기 처리(나머지 작업들)
+                chatRoomService.taskForEndRoom(roomId, chatRoom, endTime, endRoom);
 
             } else {
                 throw new ExpectedException(ErrorCode.ROOM_MENTOR_CAN_END);
